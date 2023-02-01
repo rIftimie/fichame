@@ -43,6 +43,9 @@ class Event
     #[ORM\OneToMany(mappedBy: 'Event', targetEntity: Task::class)]
     private Collection $tasks;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?EventCategory $category = null;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -175,6 +178,18 @@ class Event
                 $task->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?EventCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?EventCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
