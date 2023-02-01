@@ -13,9 +13,6 @@ class EventType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('start_date')
-            ->add('end_date')
-            ->add('schedule')
             ->add('linkInformation')
             ->add('eventCategory')
             ->add('linkForm')
