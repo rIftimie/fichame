@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Start_date</th>
                 <th>End_date</th>
@@ -17,15 +16,12 @@
                 <th>EventCategory</th>
                 <th>LinkForm</th>
                 <th>Workers_number</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for event in events %}
             <tr>
-                <td>{{ event.id }}</td>
                 <td>{{ event.name }}</td>
-                <td>{{ event.startDate ? event.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</td>
                 <td>{{ event.schedule }}</td>
                 <td>{{ event.linkInformation }}</td>
