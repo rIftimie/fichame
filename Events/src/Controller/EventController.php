@@ -24,11 +24,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-<<<<<<< HEAD
-    public function new(Request $request, EventRepository $eventRepository): Response
-=======
     public function new(EventCategory $eventCategory, Request $request, EventRepository $eventRepository, UserRepository $userRepository, TaskRepository $taskRepository): Response
->>>>>>> 4b272c37df0b5881c31090926cf960167967f69b
     {
 
 
