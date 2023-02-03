@@ -16,6 +16,27 @@ class TaskController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/edit/{state}', name: 'app_task_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Task $task, TaskRepository $taskRepository): Response
+    {
+        
+        
+
+       //El estado 1 es Aceptado
+       //El estado 2 es Rechazado
+       //El estado 3 es Asignado
+       //El estado 4 es Terminado
+
+            $task->setStatusRequested($state);
+
+            $taskRepository->save($task, true);
+
+            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        
+
+        
+    }
+
     
 
 
