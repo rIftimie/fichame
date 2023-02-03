@@ -13,7 +13,7 @@ class EventCategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
+            // ->add('description')
         ;
     }
 

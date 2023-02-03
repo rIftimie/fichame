@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Event;
-use App\Entity\EventCategory;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +22,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function new(EventCategory $eventCategory, Request $request, EventRepository $eventRepository): Response
+    public function new(Request $request, EventRepository $eventRepository): Response
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
