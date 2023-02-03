@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,24 +47,25 @@ class TaskRepository extends ServiceEntityRepository
         $task = new Task();
         $task->setUser($user);
         $task->setEvent($event);
-        save($task, true);
+        $this->save($task, true);
 
     }
+   
 
-//    /**
-//     * @return Task[] Returns an array of Task objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Task[] Returns an array of Task objects
+    */
+   public function showPendingTasksByUser(): array
+   {
+
+    $userId=$this->getUser()->getId();
+       return $this->createQueryBuilder('task')
+           ->andWhere('task.state_request = NULL and task.user_id=:userId')
+           ->setParameter('userId', $userId)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Task
 //    {

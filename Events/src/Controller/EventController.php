@@ -7,6 +7,7 @@ use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 use App\Repository\TaskRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function new(EventCategory $eventCategory, Request $request, EventRepository $eventRepository, UserRepository $userRepository, TaskRepository $taskRepository): Response
+    public function new( Request $request, EventRepository $eventRepository, UserRepository $userRepository, TaskRepository $taskRepository): Response
     {
 
 
