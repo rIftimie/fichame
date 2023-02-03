@@ -23,7 +23,6 @@ class UserType extends AbstractType
                     'Usuario' => 'ROLE_USER',
                     'Almacen' => 'ROLE_ALMACEN',
                 ],
-                'mapped' => false,
                 'expanded' => true,
                 'multiple' => true
             ])

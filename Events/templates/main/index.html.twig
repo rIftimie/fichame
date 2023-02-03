@@ -9,12 +9,46 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {# <h1>Hello {{ controller_name }}! ✅</h1> #}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/josec/Desktop/Desarrollo Servidor/ProyectoDual/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/josec/Desktop/Desarrollo Servidor/ProyectoDual/templates/main/index.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
-    </ul>
+    <h1>TASKS✅</h1>
+    {% if app.user %}
+        
+        You are logged in as {{ app.user.username  }}, <a href="{{ path('app_logout') }}">Logout</a>
+        
+    {% else %}
+        <a href="/login">Login </a> -
+        <a href="/register"> Registration</a>
+        
+    {% endif %}
+         
+    {% if is_granted("ROLE_ADMIN")%}
+        - <a href="/articulo"> Crear/Modificar Articulos</a>
+        - <a href="/user">Editar Usuarios</a> 
+    {% endif %}
+
+    <br><br>
+
+    {% for task in tasks %}
+
+        <ul>
+            <li>
+                Nombre:{{task.event.name}}<br>
+                <a href="/"{task.id}"/edit/1"><button type="button" >ACEPTAR</button></a>
+                <a href="/"{task.id}"/edit/2"><button type="button" >RECHAZAR</button></a>
+            </li>
+            
+        
+        
+        
+        
+        
+        </ul>
+
+
+    {% endfor %}
+
+    
+
 </div>
 {% endblock %}
