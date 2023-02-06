@@ -29,9 +29,6 @@ class MainController extends AbstractController
             
             'tasks' => $taskRepository->showPendingTasksByUser($user),
 
-        return $this->render('main/index.html.twig') ([
-            // 'controller_name' => 'MainController',
-            'tasks' => $taskRepository->showPendingTasksByUser($this->getUser()),
         ]);
     }
 }
