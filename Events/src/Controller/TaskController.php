@@ -27,7 +27,7 @@ class TaskController extends AbstractController
        //El estado 3 es Asignado
        //El estado 4 es Terminado
 
-            $task->setStatusRequested($state);
+            $task->setStateRequest($state);
 
             $taskRepository->save($task, true);
 
