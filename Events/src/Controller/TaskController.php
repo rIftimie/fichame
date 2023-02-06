@@ -5,6 +5,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use App\Repository\TaskRepository;
+use App\Entity\Task;
 
 class TaskController extends AbstractController
 {
@@ -17,7 +20,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/{id}/edit/{state}', name: 'app_task_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Task $task, TaskRepository $taskRepository): Response
+    public function edit(Request $request, int $state,Task $task, TaskRepository $taskRepository): Response
     {
         
         
@@ -27,7 +30,7 @@ class TaskController extends AbstractController
        //El estado 3 es Asignado
        //El estado 4 es Terminado
 
-            $task->setStatusRequested($state);
+            $task->setStateRequest($state);
 
             $taskRepository->save($task, true);
 

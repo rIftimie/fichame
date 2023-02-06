@@ -55,13 +55,14 @@ class TaskRepository extends ServiceEntityRepository
    /**
     * @return Task[] Returns an array of Task objects
     */
-   public function showPendingTasksByUser(): array
+   public function showPendingTasksByUser(User $user): array
    {
 
-    $userId=$this->getUser()->getId();
+    
+
        return $this->createQueryBuilder('task')
-           ->andWhere('task.state_request = NULL and task.user_id=:userId')
-           ->setParameter('userId', $userId)
+           ->andWhere('task.state_request is NULL and task.User=:user')
+           ->setParameter('user', $user)
            ->getQuery()
            ->getResult()
        ;
