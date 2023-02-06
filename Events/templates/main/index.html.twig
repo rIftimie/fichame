@@ -29,27 +29,49 @@
 
     <br><br>
 
-    {% for task in tasks %}
+    {% if app.user %}
 
-        <ul>
-            <li>
-                Nombre:{{task.event.name}}<br>
+        {% for task in taskAsignments %}
 
-                <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >ACEPTAR</button></a>
-                <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >RECHAZAR</button></a>
+            <ul>
+                <li>
+                    Nombre:{{task.event.name}}<br>
 
-                
-            </li>
+                    <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >Comenzar Tarea</button></a>
+
+                    {% if (task.getStateRequest()=== 1) %}    
+                        
+                        {# <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >Parar Tarea</button></a> #}
+
+                    {% endif %}
+                </li>
+
             
-        
-        
-        
-        
-        
-        </ul>
+            </ul>
 
 
-    {% endfor %}
+        {% endfor %}
+        
+        {% for task in tasks %}
+
+            <ul>
+                <li>
+                    Nombre:{{task.event.name}}<br>
+
+                    <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >ACEPTAR</button></a>
+                    <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >RECHAZAR</button></a>
+
+                    
+                </li>
+
+            
+            </ul>
+
+
+        {% endfor %}
+    {% endif %}
+    
+        
 
     
 
