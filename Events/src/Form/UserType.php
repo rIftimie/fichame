@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class UserType extends AbstractType
 {
@@ -31,7 +32,10 @@ class UserType extends AbstractType
             ->add('address')
             ->add('phoneNumber')
             ->add('dni')
-            ->add('regDate')
+            ->add('regDate', DateTimeType::class, [
+                'mapped' => false
+            ]) 
+            
         ;
     }
 

@@ -13,17 +13,45 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+        <style>
+    .contenedor {
+        margin-left: 40px;
+    }
+
+    {# menu#}
+    
+   .topnav {
+     overflow: hidden;
+     margin-right: 20px;
+
+         }
+                                
+  .topnav a {
+    text-decoration: none;
+    float: right;
+    display: block;
+    padding: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+     border-radius: 0px;
+   /* background-image: linear-gradient(to right, rgba(43, 237, 192, 1), rgba(255, 255, 255, 1), rgba(43, 237, 192, 1));*/
+background:black;
+    color: white;
+    text-align: center;
+    width: 120px;
+    }
+                                
+     .topnav a:hover {
+     /*background-image: linear-gradient(to right, rgb(233, 170, 18), rgba(255, 255, 255, 1), rgb(233, 170, 18));*/
+     background: whitesmoke;
+     color:black;
+     }
+
+        </style>
+
     </head>
     <body>
-        {% block body %}
-        
-        
-        
-        
-        
-        
-        
-        
-        {% endblock %}
+        {% block body %}{% endblock %}
     </body>
 </html>
