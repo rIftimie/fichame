@@ -44,6 +44,26 @@ class TaskController extends AbstractController
 
     }
 
+    #[Route('/{id}/editState/{state}/{break}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
+    public function editState(Request $request, int $state, int $break,Task $task, TaskRepository $taskRepository): Response
+    {
+
+
+       //En state 1 es Comenzado
+       //En state 2 es parado
+        
+            $task->setState($state);
+
+            $task->setBreakTime($break);
+
+            $taskRepository->save($task, true);
+
+            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        
+
+        
+    }
+
 
 
 

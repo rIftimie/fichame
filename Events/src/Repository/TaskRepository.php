@@ -69,15 +69,6 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    $userId=$user->getId();
-    
-       return $this->createQueryBuilder('task')
-           ->andWhere('task.state_request is NULL and task.User=:userId')
-           ->setParameter('userId', $userId)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
 
 
     public function showAsignByUser(User $user): array

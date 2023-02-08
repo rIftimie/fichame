@@ -53,7 +53,7 @@
 
 				<ul>
 					<li>
-						Nombre:{{task.event.name}}<br>
+						Nombre:{{task.Event.name}}<br>
 						
                         {% if (task.isState()== NULL) %}
 
@@ -65,7 +65,7 @@
 						
                         {# TODO: Solo se muestra si es el dia #}
 						{% if (task.isState()== 1) %}
-                            <form action="{{ path('app_task_edit_State', {'id': task.id, 'state': 2}) }}">
+                            <form action="{{ path('app_task_edit_State', {'id': task.id, 'state': 2, 'break':}) }}">
 
                                 <a>
                                     <button type="button">Terminar Tarea</button>
