@@ -83,6 +83,10 @@ class TaskRepository extends ServiceEntityRepository
    }
 
 //    public function showAsignByUser(User $user): array
+//    /**
+//     * @return Task[] Returns an array of Task objects
+//     */
+//    public function findByExampleField($value): array
 //    {
 
 //     $userId=$user->getId();
