@@ -1,16 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Hello MainController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
 
-<div class="example-wrapper">
-    {# <h1>Hello {{ controller_name }}! ✅</h1> #}
+	<div
+		class="example-wrapper">
+		{# <h1>Hello {{ controller_name }}! ✅</h1> #}
 
+<<<<<<< HEAD
     <h1>TASKS✅</h1>
     {% if app.user %}
         
@@ -25,32 +36,97 @@
         - <a href="/event"> Crear/Modificar Eventos</a>
         - <a href="/user">Editar Usuarios</a> 
     {% endif %}
+=======
+		<h1>TASKS✅</h1>
+		{% if app.user %}
+>>>>>>> d69670eec25f9445a8d4b1a3458a708bf30e1fc1
 
-    <br><br>
+			You are logged in as
+			{{ app.user.username  }},
+			<a href="{{ path('app_logout') }}">Logout</a>
 
-    {% for task in tasks %}
+		{% else %}
+			<a href="/login">Login
+			</a>
+			-
+			<a href="/register">
+				Registration</a>
 
-        <ul>
-            <li>
-                Nombre:{{task.event.name}}<br>
+		{% endif %}
 
-                <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >ACEPTAR</button></a>
-                <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >RECHAZAR</button></a>
+		{% if is_granted("ROLE_ADMIN")%}
+			-
+			<a href="/articulo">
+				Crear/Modificar Articulos</a>
+			-
+			<a href="/user">Editar Usuarios</a>
+		{% endif %}
 
-                
-            </li>
-            
-        
-        
-        
-        
-        
-        </ul>
+		<br><br>
+
+		{% if app.user %}
+
+			{% for task in taskAsignments %}
+
+				<ul>
+					<li>
+						Nombre:{{task.event.name}}<br>
+						
+                        {% if (task.isState()== NULL) %}
+
+							<a href="{{ path('app_task_edit_State', {'id': task.id, 'state': 1}) }}">
+							    <button type="button">Comenzar Tarea</button>
+						    </a>
+
+						{% endif %}
+						
+                        {# TODO: Solo se muestra si es el dia #}
+						{% if (task.isState()== 1) %}
+                            <form action="{{ path('app_task_edit_State', {'id': task.id, 'state': 2}) }}">
+
+                                <a>
+                                    <button type="button">Terminar Tarea</button>
+                                </a>
+                                <input type="number" placeholder="Tiempo de Descanso"/>
+                            
+                            </form>
+							
+                           
+						{% endif %}
+					</li>
 
 
-    {% endfor %}
+				</ul>
 
-    
+                                   <br> <a href="{{ path('app_task_', {'id': app.user.id}) }}"><button type="button" >VER TAREAS ACEPTADAS</button></a><br>
 
-</div>
+
+
+			{% endfor %}
+
+			{% for task in tasks %}
+
+				<ul>
+					<li>
+						Nombre:{{task.event.name}}<br>
+
+						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 1}) }}">
+							<button type="button">ACEPTAR</button>
+						</a>
+						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 2}) }}">
+							<button type="button">RECHAZAR</button>
+						</a>
+
+
+					</li>
+
+
+				</ul>
+
+
+			{% endfor %}
+		{% endif %}
+
+
+	</div>
 {% endblock %}
