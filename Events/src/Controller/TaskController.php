@@ -35,6 +35,8 @@ class TaskController extends AbstractController
         //El estado 4 es Terminado
 
         $task->setStateRequest($state);
+        $date = new \DateTime();
+        $task->setStatusResolveDate($date);
 
         $taskRepository->save($task, true);
 
@@ -45,23 +47,23 @@ class TaskController extends AbstractController
     }
 
     #[Route('/{id}/editState/{state}/{break}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
-    public function editState(Request $request, int $state, int $break,Task $task, TaskRepository $taskRepository): Response
+    public function editState(Request $request, int $state, int $break, Task $task, TaskRepository $taskRepository): Response
     {
 
 
-       //En state 1 es Comenzado
-       //En state 2 es parado
-        
-            $task->setState($state);
+        //En state 1 es Comenzado
+        //En state 2 es parado
 
-            $task->setBreakTime($break);
+        $task->setState($state);
 
-            $taskRepository->save($task, true);
+        $task->setBreakTime($break);
 
-            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-        
+        $taskRepository->save($task, true);
 
-        
+        return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+
+
+
     }
 
 
