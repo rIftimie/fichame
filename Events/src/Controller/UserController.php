@@ -28,7 +28,10 @@ class UserController extends AbstractController
     public function new(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
+        $user->setRegDate(new \DateTime());
+
         $form = $this->createForm(UserType::class, $user);
+    
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

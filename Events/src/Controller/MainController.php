@@ -3,17 +3,22 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Repository\TaskRepository;
 class MainController extends AbstractController
 {
-    #[Route(path: '/', name: 'app_main')]
+    /**
+     * @Route("/", name="app_main")
+     */
+
     public function index(): Response
     {
-        return $this->render('main/index.html.twig') ([
+
+        return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
+            
+            
         ]);
     }
 }
