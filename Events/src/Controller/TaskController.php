@@ -51,16 +51,16 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
 
         }    
-        #[Route('/{id}/editExtra', name: 'app_task_edit_extra', methods: ['GET', 'POST'])]
-    public function editExtra(Request $request,int $extra, Task $task, TaskRepository $taskRepository): Response
+        #[Route('/{id}/editExtra}', name: 'app_task_edit_extra', methods: ['GET', 'POST'])]
+    public function editExtra(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
         
         $form = $this->createForm(EventType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $task->setExtraTime($extra);
-
+            
+            $task->setExtraTime($form->get('extra_time')->getData());
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
