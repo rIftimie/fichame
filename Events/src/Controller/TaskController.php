@@ -67,9 +67,9 @@ class TaskController extends AbstractController
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-        }else{
-            dd($request); //Esto es a modo de prueba, ni caso
         }
+            dd($request); //Esto es a modo de prueba, ni caso
+        
 
     }
     #[Route('/{id}/task',name: 'app_task_accepted')]
