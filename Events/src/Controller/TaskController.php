@@ -75,9 +75,9 @@ class TaskController extends AbstractController
         $task->setBreakTime($breakTime);
 
 
-        $task->setState($state);
+        //$task->setStateRequest($state);
 
-        echo $task->getStateRequest();
+        //echo $task->getStateRequest();
 
 
         $taskRepository->save($task, true);
