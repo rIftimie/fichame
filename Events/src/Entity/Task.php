@@ -35,6 +35,9 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?Event $Event = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $breakTime = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class Task
     public function setEvent(?Event $Event): self
     {
         $this->Event = $Event;
+
+        return $this;
+    }
+
+    public function getBreakTime(): ?int
+    {
+        return $this->breakTime;
+    }
+
+    public function setBreakTime(?int $breakTime): self
+    {
+        $this->breakTime = $breakTime;
 
         return $this;
     }

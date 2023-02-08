@@ -19,8 +19,8 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit/{state}', name: 'app_task_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, int $state,Task $task, TaskRepository $taskRepository): Response
+    #[Route('/{id}/edit/{state_request}', name: 'app_task_edit_State_request', methods: ['GET', 'POST'])]
+    public function editState_request(Request $request, int $state_request,Task $task, TaskRepository $taskRepository): Response
     {
         
         
@@ -30,7 +30,26 @@ class TaskController extends AbstractController
        //El estado 3 es Asignado
        //El estado 4 es Terminado
 
-            $task->setStateRequest($state);
+
+            $task->setStateRequest($state_request);
+
+            $taskRepository->save($task, true);
+
+            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        
+
+        
+    }
+    
+    #[Route('/{id}/editState/{state}/{}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
+    public function editState(Request $request, int $state,Task $task, TaskRepository $taskRepository): Response
+    {
+
+
+       //En state 1 es Comenzado
+       //En state 2 es parado
+        
+            $task->setState($state);
 
             $taskRepository->save($task, true);
 
