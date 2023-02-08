@@ -24,11 +24,26 @@ class MainController extends AbstractController
     public function index(TaskRepository $taskRepository): Response
     {
         $user=$this->getUser();
-        return $this->render('main/index.html.twig', [
+
+
+        if($user){
+
+            return $this->render('main/index.html.twig', [
 
             
-            'tasks' => $taskRepository->showPendingTasksByUser($user),
+            
+                'tasks' => $taskRepository->showPendingTasksByUser($user),
+                'tasksAsign' => $taskRepository->showAsignTasksByUser($user),
 
-        ]);
+    
+            ]);
+        }else{
+
+            return $this->render('main/index.html.twig',[
+                        'controller_name' => 'MainController',
+                    ]);
+        }
+        
+        
     }
 }

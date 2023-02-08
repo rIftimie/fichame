@@ -29,6 +29,8 @@
 
     <br><br>
 
+    {% if app.user %}
+
     {% for task in tasks %}
 
         <ul>
@@ -51,7 +53,29 @@
 
     {% endfor %}
 
-    
+
+    {% for task in tasksAsign %}
+
+        <ul>
+            <li>
+                Nombre:{{task.event.name}}<br>
+
+                <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >Comenzar</button></a>
+
+                
+            </li>
+            
+        
+        
+        
+        
+        
+        </ul>
+
+
+    {% endfor %}
+
+    {% endif %}
 
 </div>
 {% endblock %}
