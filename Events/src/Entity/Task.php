@@ -27,7 +27,7 @@ class Task
     private ?string $state_request = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $extra_time = null;
+    private ?\Int $extra_time = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?User $User = null;
@@ -88,12 +88,12 @@ class Task
         return $this;
     }
 
-    public function getExtraTime(): ?\DateTimeInterface
+    public function getExtraTime(): ?\Int
     {
         return $this->extra_time;
     }
 
-    public function setExtraTime(?\DateTimeInterface $extra_time): self
+    public function setExtraTime(?\Int $extra_time): self
     {
         $this->extra_time = $extra_time;
 
