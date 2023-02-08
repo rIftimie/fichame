@@ -71,7 +71,9 @@ class TaskController extends AbstractController
     }
     #[Route('/{id}/task',name: 'app_task_accepted')]
     public function getAcceptedTasks(Request $request, TaskRepository $taskRepository): Response{
-        $tasks = $taskRepository->findBy(["state_request"=>'1']);
+        $tasks = $taskRepository->findBy(["state_request"=>'1',
+                                          "User" => $this->getUser()->getId()
+                                         ]);
         return $this->render('task/extra.html.twig', [
             'tasks' => $tasks,
         ]);

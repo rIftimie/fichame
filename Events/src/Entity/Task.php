@@ -26,8 +26,8 @@ class Task
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $state_request = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private $extra_time = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $extra_time = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?User $User = null;
