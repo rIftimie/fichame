@@ -44,8 +44,8 @@ class TaskController extends AbstractController
 
     }
 
-    #[Route('/{id}/editState/{state}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
-    public function editState(Request $request, int $state,Task $task, TaskRepository $taskRepository): Response
+    #[Route('/{id}/editState/{state}/{break}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
+    public function editState(Request $request, int $state, int $break,Task $task, TaskRepository $taskRepository): Response
     {
 
 
@@ -54,12 +54,9 @@ class TaskController extends AbstractController
         
             $task->setState($state);
 
-            // $task->setBreakTime($break);
+            $task->setBreakTime($break);
 
             $taskRepository->save($task, true);
-
-            // $taskRepository->save($break, true);
-
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
         
@@ -87,12 +84,6 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
         
         
-
-        
-    }
-
-
-
 
 
 }
