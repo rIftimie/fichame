@@ -69,6 +69,16 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    $userId=$user->getId();
+    
+       return $this->createQueryBuilder('task')
+           ->andWhere('task.state_request is NULL and task.User=:userId')
+           ->setParameter('userId', $userId)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 
     public function showAsignByUser(User $user): array
     {
@@ -76,12 +86,26 @@ class TaskRepository extends ServiceEntityRepository
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=3 and task.User=:userId')
+            ->andWhere('task.state_request=1 and task.User=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
         ;
     }
+
+//    public function showAsignByUser(User $user): array
+//    {
+
+//     $userId=$user->getId();
+
+//        return $this->createQueryBuilder('task')
+//            ->andWhere('task.state_request=3 and task.User=:userId and task.state=:state')
+//            ->setParameter('userId', $userId)
+//            ->setParameter('state', 1)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
 
 
 

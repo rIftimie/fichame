@@ -23,8 +23,8 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit/{state}', name: 'app_task_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, int $state, Task $task, TaskRepository $taskRepository): Response
+    #[Route('/{id}/edit/{state_request}', name: 'app_task_edit_State_request', methods: ['GET', 'POST'])]
+    public function editState_request(Request $request, int $state_request, Task $task, TaskRepository $taskRepository): Response
     {
 
 
