@@ -65,12 +65,12 @@
 						
                         {# TODO: Solo se muestra si es el dia #}
 						{% if (task.isState()== 1) %}
-                            <form action="{{ path('app_task_edit_State', {'id': task.id, 'state': 2, 'break':}) }}">
+                            <form action="{{ path('app_task_update_State', {'id': task.id, 'state': 0}) }}">
 
                                 <a>
-                                    <button type="button">Terminar Tarea</button>
+                                    <button type="submit">Terminar Tarea</button>
                                 </a>
-                                <input type="number" placeholder="Tiempo de Descanso"/>
+                                <input type="number" placeholder="Tiempo de Descanso" name="breakHours"/>
                             
                             </form>
 							
