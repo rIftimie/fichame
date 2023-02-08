@@ -38,6 +38,9 @@ class Task
     #[ORM\Column(nullable: true)]
     private ?int $breakTime = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $statusResolveDate = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +138,18 @@ class Task
     public function setBreakTime(?int $breakTime): self
     {
         $this->breakTime = $breakTime;
+
+        return $this;
+    }
+
+    public function getStatusResolveDate(): ?\DateTimeInterface
+    {
+        return $this->statusResolveDate;
+    }
+
+    public function setStatusResolveDate(?\DateTimeInterface $statusResolveDate): self
+    {
+        $this->statusResolveDate = $statusResolveDate;
 
         return $this;
     }
