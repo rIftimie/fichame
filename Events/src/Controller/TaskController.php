@@ -8,14 +8,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TaskRepository;
 use App\Entity\Task;
-
 class TaskController extends AbstractController
 {
     #[Route('/task', name: 'app_task')]
-    public function index(): Response
+    public function index(TaskRepository $taskRepository): Response
     {
+  
+        
         return $this->render('task/index.html.twig', [
             'controller_name' => 'TaskController',
+            'tasks' => $taskRepository->findAll()
+            
         ]);
     }
 

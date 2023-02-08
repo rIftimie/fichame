@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\TaskRepository;
 
 class MainController extends AbstractController
 {
@@ -23,26 +21,8 @@ class MainController extends AbstractController
 
     public function index(TaskRepository $taskRepository): Response
     {
-        $user=$this->getUser();
-
-        if($user){
-            return $this->render('main/index.html.twig', [
-            
-                'tasks' => $taskRepository->showPendingTasksByUser($user),
-                'taskAsignments' => $taskRepository->showAsignByUser($user),
-
-            ]);
-            
-
-        }else{
-            
-
-            return $this->render('main/index.html.twig', [
-                'controller_name' => 'MainController',
-            ]);
-
-        }
-
-        
+        return $this->render('main/index.html.twig') ([
+            'controller_name' => 'MainController',
+        ]);
     }
 }
