@@ -59,7 +59,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            dd($task);
             $task->setExtraTime($form->get('extra_time')->getData());
             $taskRepository->save($task, true);
 
