@@ -3,6 +3,7 @@
 {% block title %}Event index{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Event index</h1>
 
     <table class="table">
@@ -41,5 +42,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_event_new') }}">Create new</a>
+    <a href="{{ path('app_event_new') }}" class="btn btn-success">Create new</a>
+
+    </div>
 {% endblock %}
