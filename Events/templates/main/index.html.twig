@@ -80,11 +80,16 @@
 
 
 				</ul>
+<<<<<<< HEAD
 
 
 			{% endfor %}
                                    <br> <a href="{{ path('app_task', {'id': app.user.id}) }}"><button type="button" >VER TAREAS ACEPTADAS</button></a><br>
 
+=======
+			{% endfor %}
+	      <br> <a href="{{ path('app_task_accepted', {'id': app.user.id}) }}"><button type="button" >VER TAREAS ACEPTADAS</button></a><br>
+>>>>>>> dfce465bb2c029a5c20c6f072d9bddc512ad0a74
 			{% for task in tasks %}
 
 				<ul>
