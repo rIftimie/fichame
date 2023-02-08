@@ -19,6 +19,7 @@
     {% else %}
         <a href="/login">Login </a> -
         <a href="/register"> Registration</a>
+
         
     {% endif %}
          
@@ -39,7 +40,7 @@
 
                     <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >Comenzar Tarea</button></a>
 
-                    {% if (task.getStateRequest()=== 1) %}    
+                    {% if (task.getStateRequest() == 1) %}    
                         
                         {# <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >Parar Tarea</button></a> #}
 
@@ -60,12 +61,16 @@
 
                     <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >ACEPTAR</button></a>
                     <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >RECHAZAR</button></a>
+                    
 
                     
                 </li>
 
             
             </ul>
+
+                                   <br> <a href="{{ path('app_task_', {'id': app.user.id}) }}"><button type="button" >VER TAREAS ACEPTADAS</button></a><br>
+
 
 
         {% endfor %}
