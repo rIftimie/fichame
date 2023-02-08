@@ -19,29 +19,13 @@ class TaskController extends AbstractController
         ]);
     }
 
-<<<<<<< HEAD
-    #[Route('/{id}/edit/{state}', name: 'app_task_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, int $state, Task $task, TaskRepository $taskRepository): Response
-=======
     #[Route('/{id}/edit/{state_request}', name: 'app_task_edit_State_request', methods: ['GET', 'POST'])]
     public function editState_request(Request $request, int $state_request,Task $task, TaskRepository $taskRepository): Response
->>>>>>> d69670eec25f9445a8d4b1a3458a708bf30e1fc1
     {
         //El estado 1 es Aceptado
         //El estado 2 es Rechazado
         //El estado 3 es Asignado
         //El estado 4 es Terminado
-
-        $task->setStateRequest($state);
-
-<<<<<<< HEAD
-        if ($state == 1) {
-            return $this->render('task/extra.html.twig', [
-                $task => 'task',
-            ]);
-        } else {
-=======
-
             $task->setStateRequest($state_request);
 
             $taskRepository->save($task, true);
@@ -61,17 +45,13 @@ class TaskController extends AbstractController
        //En state 2 es parado
         
             $task->setState($state);
->>>>>>> d69670eec25f9445a8d4b1a3458a708bf30e1fc1
 
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
 
-        }
-
-
-    }
-    #[Route('/{id}/task/{extra}')]
+        }    
+        #[Route('/{id}/editExtra', name: 'app_task_edit_extra', methods: ['GET', 'POST'])]
     public function editExtra(Request $request,int $extra, Task $task, TaskRepository $taskRepository): Response
     {
         
@@ -84,12 +64,17 @@ class TaskController extends AbstractController
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        }else{
+            dd($request); //Esto es a modo de prueba, ni caso
         }
 
     }
     #[Route('/{id}/task')]
     public function getAcceptedTasks(Request $request, TaskRepository $taskRepository): Response{
-
+        $tasks = $taskRepository->findBy(["state_request"=>'1']);
+        return $this->render('task/extra.html.twig', [
+            'tasks' => $tasks,
+        ]);
     }
 
 

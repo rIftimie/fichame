@@ -27,7 +27,7 @@ class Task
     private ?string $state_request = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\Int $extra_time = null;
+    private $extra_time = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?User $User = null;
@@ -91,12 +91,12 @@ class Task
         return $this;
     }
 
-    public function getExtraTime(): ?\Int
+    public function getExtraTime()
     {
         return $this->extra_time;
     }
 
-    public function setExtraTime(?\Int $extra_time): self
+    public function setExtraTime( $extra_time): self
     {
         $this->extra_time = $extra_time;
 
