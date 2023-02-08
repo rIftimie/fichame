@@ -29,7 +29,7 @@ class MainController extends AbstractController
             return $this->render('main/index.html.twig', [
             
                 'tasks' => $taskRepository->showPendingTasksByUser($user),
-                'taskAsignments' => $taskRepository->showAsignByUser($user),
+                'taskAsignments' => $taskRepository->showAsignTasksByUser($user),
 
             ]);
             

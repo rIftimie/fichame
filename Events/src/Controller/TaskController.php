@@ -26,9 +26,9 @@ class TaskController extends AbstractController
         
 
        //El estado 1 es Aceptado
-       //El estado 2 es Rechazado
-       //El estado 3 es Asignado
-       //El estado 4 es Terminado
+       //El estado 0 es Rechazado
+       //El estado 2 es Asignado
+       //El estado 3 es Terminado
 
 
             $task->setStateRequest($state_request);
@@ -41,15 +41,27 @@ class TaskController extends AbstractController
         
     }
     
-    #[Route('/{id}/editState/{state}/{}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
+    #[Route('/{id}/editState/{state}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
     public function editState(Request $request, int $state,Task $task, TaskRepository $taskRepository): Response
     {
 
 
        //En state 1 es Comenzado
        //En state 2 es parado
+           $tiempoDescanso = $request->get('tiempoDescanso');
         
+           if($state==0){
+
+            $stateRequest=3;
+           }else{
+
+            $stateRequest=2;
+           }
+           
+            $task->setBreakTime($tiempoDescanso);
+            $task->setStateRequest($stateRequest);
             $task->setState($state);
+            
 
             $taskRepository->save($task, true);
 
