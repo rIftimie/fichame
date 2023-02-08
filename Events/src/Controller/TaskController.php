@@ -22,15 +22,10 @@ class TaskController extends AbstractController
     #[Route('/{id}/edit/{state_request}', name: 'app_task_edit_State_request', methods: ['GET', 'POST'])]
     public function editState_request(Request $request, int $state_request,Task $task, TaskRepository $taskRepository): Response
     {
-        
-        
-
-       //El estado 1 es Aceptado
-       //El estado 2 es Rechazado
-       //El estado 3 es Asignado
-       //El estado 4 es Terminado
-
-
+        //El estado 1 es Aceptado
+        //El estado 2 es Rechazado
+        //El estado 3 es Asignado
+        //El estado 4 es Terminado
             $task->setStateRequest($state_request);
 
             $taskRepository->save($task, true);
@@ -54,12 +49,33 @@ class TaskController extends AbstractController
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-        
 
+        }    
+        #[Route('/{id}/editExtra', name: 'app_task_edit_extra', methods: ['GET', 'POST'])]
+    public function editExtra(Request $request,int $extra, Task $task, TaskRepository $taskRepository): Response
+    {
         
+        $form = $this->createForm(EventType::class, $task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task->setExtraTime($extra);
+
+            $taskRepository->save($task, true);
+
+            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        }else{
+            dd($request); //Esto es a modo de prueba, ni caso
+        }
+
     }
-
-    
+    #[Route('/{id}/task')]
+    public function getAcceptedTasks(Request $request, TaskRepository $taskRepository): Response{
+        $tasks = $taskRepository->findBy(["state_request"=>'1']);
+        return $this->render('task/extra.html.twig', [
+            'tasks' => $tasks,
+        ]);
+    }
 
 
 }
