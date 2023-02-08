@@ -21,9 +21,8 @@
         <a href="/register"> Registration</a>
         
     {% endif %}
-         
     {% if is_granted("ROLE_ADMIN")%}
-        - <a href="/articulo"> Crear/Modificar Articulos</a>
+        - <a href="/event"> Crear/Modificar Eventos</a>
         - <a href="/user">Editar Usuarios</a> 
     {% endif %}
 
