@@ -4,60 +4,77 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
 
+<div class="example-wrapper">
+    {# <h1>Hello {{ controller_name }}! ✅</h1> #}
 
-<div class="contenedor">
-    <header>
-    
-    <img class="LogoSym" src="images/SfBig.png" alt="Logo de symfony" width="50%" >
-    <h1>Fichame: Tu app de control de trabajadores: Beta Brach  </h1>
-    
-</header>
-
-</div>
-
-<div class="container">
-<div class="tutorial">
-  <h2>Bienvenido al panel </h2>
+    <h1>TASKS✅</h1>
     {% if app.user %}
-   {# <li>Hola {{ app.user }}"></li>  #}
-    <h5>User registerered <b>:{{ app.user.userIdentifier }} </b> </h5>  
-
-    {% for role in app.user.roles %}
-      <h6> Rol: {{ role }} </h6>
-    {% endfor %}
-
-
-     <a href="{{ path('app_logout') }}">Logout</a> &#x26d4
-
-
-     {% else %}
-      <li><b>User unregisterered </b></li>  
-       {% endif %}
-     <div class="topnav">
-           {#      <a href="#">Ayuda</a>
-                <a href="#"> Alumnos</a>
-                <a href="#"> Cursos</a>
-                <a href="#"> Información</a>
-                <a href="#"> Inicio</a> #}
-
-              <a href="{{ path('app_register') }}"> Registro</a>
-              <a href="{{ path('app_login') }}"> Login</a>
-              <a href="{{ path('app_task') }}"> ver Tareas</a>
+        
+        You are logged in as {{ app.user.username  }}, <a href="{{ path('app_logout') }}">Logout</a>
+        
+    {% else %}
+        <a href="/login">Login </a> -
+        <a href="/register"> Registration</a>
+        
+    {% endif %}
          
-           <a href="{{ path('app_event_index') }}"> Ver eventos</a>
-            </div>
+    {% if is_granted("ROLE_ADMIN")%}
+        - <a href="/articulo"> Crear/Modificar Articulos</a>
+        - <a href="/user">Editar Usuarios</a> 
+    {% endif %}
+
+    <br><br>
+
+    {% if app.user %}
+
+        {% for task in taskAsignments %}
+
+            <ul>
+                <li>
+                    Nombre:{{task.event.name}}<br>
+
+                    <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >Comenzar Tarea</button></a>
+
+                    {% if (task.getStateRequest()=== 1) %}    
+                        
+                        {# <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >Parar Tarea</button></a> #}
+
+                    {% endif %}
+                </li>
+
+            
+            </ul>
+
+
+        {% endfor %}
+        
+        {% for task in tasks %}
+
+            <ul>
+                <li>
+                    Nombre:{{task.event.name}}<br>
+
+                    <a href="{{ path('app_task_edit', {'id': task.id, 'state': 1}) }}"><button type="button" >ACEPTAR</button></a>
+                    <a href="{{ path('app_task_edit', {'id': task.id, 'state': 2}) }}"><button type="button" >RECHAZAR</button></a>
+
+                    
+                </li>
+
+            
+            </ul>
+
+
+        {% endfor %}
+    {% endif %}
     
-    {# <li><a href="{{ path('app_register') }}"> Registro</a></li>
-    <li><a href="{{ path('app_login') }}"> Login</a></li>
-    <li><a href="{{ path('app_task') }}"> Crear tarea</a></li>
-    <li><a href="{{ path('app_task') }}"> Crear evento</a></li> #}
+        
 
-
-
-
-</div>
-
+    
 
 </div>
 
