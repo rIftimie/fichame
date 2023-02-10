@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
+use App\Repository\TaskRepository;
+
 
 /**
  * @extends ServiceEntityRepository<Event>
@@ -25,7 +28,8 @@ class EventRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
     }
@@ -34,9 +38,20 @@ class EventRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->remove($entity);
 
-        if ($flush) {
+        if ($flush)
+        {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function createEventAlmacen(User $user, TaskRepository $taskRepository): void
+    {
+        $event = new Event();
+        $event->setName('Almcacen');
+        $event->setStartDate(new \DateTime());
+        $event->setEndDate(new \DateTime());
+        $taskRepository->createTask($event, $user);
+        $this->save($event, true);
     }
 
 //    /**

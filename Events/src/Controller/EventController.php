@@ -82,4 +82,12 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
+    public function newAlmacen(Request $request, EventRepository $eventRepository, TaskRepository $taskRepository): Response
+    {
+        $eventRepository->createEventAlmacen($this->getUser(), $taskRepository);
+
+        return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
