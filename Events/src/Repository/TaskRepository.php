@@ -61,7 +61,7 @@ class TaskRepository extends ServiceEntityRepository
     $userId=$user->getId();
     
        return $this->createQueryBuilder('task')
-           ->andWhere('task.state_request is NULL and task.User=:userId')
+           ->andWhere('task.state_request is NULL  and task.User=:userId')
            ->setParameter('userId', $userId)
            ->getQuery()
            ->getResult()
@@ -133,7 +133,7 @@ class TaskRepository extends ServiceEntityRepository
      $userId=$user->getId();
      
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=2 and task.User=:userId')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
