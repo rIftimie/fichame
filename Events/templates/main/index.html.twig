@@ -52,19 +52,20 @@
 			{% for task in taskAsignments %}
 
 				<ul>
-					<li>
-						Nombre:{{task.event.name}}<br>
+					
 						
-                        {% if task.state== NULL and task.stateRequest != 3 %}
-
-							<a href="{{ path('app_task_edit_State', {'id': task.id, 'state': 1}) }}">
+						
+                        {% if task.isState()== 1 and task.stateRequest == 1 and task.EndTime() == NULL and task.StartTime()== NULL %}
+							Nombre:{{task.event.name}}<br>
+							<a href="{{ path('app_task_edit_State', {'id': task.id}) }}">
 							    <button type="button">Comenzar Tarea</button>
 						    </a>
 
 						{% endif %}
 						
                         {# TODO: Solo se muestra si es el dia #}
-						{% if (task.isState()== 1) %}
+						{% if (task.isState()== 1 and task.StartTime() != NULL and task.EndTime() == NULL ) %}
+						Nombre:{{task.event.name}}<br>
                             <form action="{{ path('app_task_edit_State', {'id': task.id, 'state': 0}) }}">
 
                                 <a>
