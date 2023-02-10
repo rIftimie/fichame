@@ -61,11 +61,9 @@
 							    <button type="button">Comenzar Tarea</button>
 						    </a>
 
-						{% endif %}
+						{% else %}
 						
-                        {# TODO: Solo se muestra si es el dia #}
-						{% if (task.getStartTime()== NULL) %}
-                            <form action="{{ path('app_task_update_State', {'id': task.id, 'state': 0}) }}">
+                            <form action="{{ path('app_task_update_State', {'id': task.id}) }}">
 
                                 <a>
                                     <button type="submit">Terminar Tarea</button>
