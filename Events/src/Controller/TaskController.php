@@ -39,7 +39,6 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
 
 
-
     }
 
     #[Route('/{id}/updateState/{state}', name: 'app_task_update_State', methods: ['GET', 'POST'])]
@@ -86,5 +85,28 @@ class TaskController extends AbstractController
 
 
 
+    }
+
+    #[Route('/seeTaskToday', name: 'app_ seeTaskToday', methods: ['GET', 'POST'])]
+    public function seeTaskToday(Request $request,  TaskRepository $taskRepository): Response
+    {
+    
+     /* Hoy de mañana
+       $hoy= new \DateTime('2023-02-11');*/
+       
+       //hoy de hoy 
+       $hoy= new \DateTime();
+       $tomorrow= new \DateTime('2023-02-11');
+
+
+        return $this->render('task/taskfull.html.twig', [
+            'tasks' => $taskRepository->findAll(),
+            'hoy'=>$hoy,
+            'tomorrow'=>$tomorrow,
+            
+        ]);
+
+
+    
     }
 }

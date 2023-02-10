@@ -45,10 +45,13 @@ class TaskRepository extends ServiceEntityRepository
 
     public function createTask(Event $event, User $user): void
     {
-
         $task = new Task();
         $task->setUser($user);
-        $task->setEvent($event);
+        if ($task -> getUser() -> getRoles() == "ROLE_ALMACEN") {
+            $task -> settype(1);
+            $task -> getStartTime();
+            $task->setEvent($event);
+        }
         $this->save($task, true);
 
     }
