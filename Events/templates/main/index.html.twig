@@ -48,23 +48,23 @@
 		<br><br>
 
 		{% if app.user %}
-
+		
 			{% for task in taskAsignments %}
 
 				<ul>
 					<li>
 						Nombre:{{task.Event.name}}<br>
 						
-                        {% if (task.isState()== NULL) %}
+                        {% if (task.isState()== 1 and task.getStateRequest()==1 and task.getStartTime()== NULL) %}
 
-							<a href="{{ path('app_task_edit_State', {'id': task.id, 'state': 1}) }}">
+							<a href="{{ path('app_task_update_State', {'id': task.id}) }}">
 							    <button type="button">Comenzar Tarea</button>
 						    </a>
 
 						{% endif %}
 						
                         {# TODO: Solo se muestra si es el dia #}
-						{% if (task.isState()== 1) %}
+						{% if (task.getStartTime()== NULL) %}
                             <form action="{{ path('app_task_update_State', {'id': task.id, 'state': 0}) }}">
 
                                 <a>
@@ -89,11 +89,11 @@
 				<ul>
 					<li>
 						Nombre:{{task.event.name}}<br>
-
+					
 						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 1}) }}">
 							<button type="button">ACEPTAR</button>
 						</a>
-						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 2}) }}">
+						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 0}) }}">
 							<button type="button">RECHAZAR</button>
 						</a>
 

@@ -30,13 +30,9 @@ class TaskController extends AbstractController
 
 
         //El estado 1 es Aceptado
-        //El estado 2 es Rechazado
-        //El estado 3 es Asignado
-        //El estado 4 es Terminado
+        //El estado 0 es Rechazado
 
-        $task->setStateRequest($state);
-        $date = new \DateTime();
-        $task->setStatusResolveDate($date);
+        $task->setStateRequest($state_request);
 
         $taskRepository->save($task, true);
 
@@ -46,57 +42,42 @@ class TaskController extends AbstractController
 
     }
 
-    #[Route('/{id}/editState/{state}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
-    public function editState(Request $request, int $state, Task $task, TaskRepository $taskRepository): Response
-    {
-
-
-        //En state 1 es Comenzado
-        //En state 2 es parado
-
-        $task->setState($state);
-
-        $task->setBreakTime($break);
-        // $task->setBreakTime($break);
-
-        $taskRepository->save($task, true);
-        $taskRepository->save($task, true);
-
-        // $taskRepository->save($break, true);
-
-
-        return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-
-
-
-    }
     #[Route('/{id}/updateState/{state}', name: 'app_task_update_State', methods: ['GET', 'POST'])]
-    public function UpdateState(Request $request, int $state, Task $task, TaskRepository $taskRepository): Response
+    public function UpdateState(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
 
-        $breakTime = $request->get("breakHours");
+        //En state 1 es Asignado
+        //En state NULL es no asignado
+        
+        $breakTime=$request->get("breakHours");
 
         $task->setBreakTime($breakTime);
 
 
-        $task->setState($state);
-
-        echo $task->getStateRequest();
+        // $task->setState($state);
 
 
+        if($state==1){
+            $fecha= new \DateTime();
+            $task->setStartTime($fecha);        
+
+            
+        }else{
+
+            $fecha= new \DateTime();
+            $task->setEndTime($fecha);
+            
+            $state_request=2;
+        }
+
+        // $task->setStateRequest($state_request);
         $taskRepository->save($task, true);
 
 
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-
-
-
+        
+    
 
     }
-
-
-
-
-
 }
