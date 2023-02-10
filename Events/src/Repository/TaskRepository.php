@@ -53,13 +53,24 @@ class TaskRepository extends ServiceEntityRepository
 
     }
 
+    public function createAsignedTask(Event $event, User $user): int
+    {
+
+        $task = new Task();
+        $task->setUser($user);
+        $task->setEvent($event);
+        $task->setState(1);
+        $this->save($task, true);
+        return $task->getId();
+    }
+
 
     /**
      * @return Task[] Returns an array of Task objects
      */
     public function showPendingTasksByUser(User $user): array
     {
-
+        //Esto es para el state_request
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
@@ -75,11 +86,11 @@ class TaskRepository extends ServiceEntityRepository
 
     public function showAsignByUser(User $user): array
     {
-
+        //Esto es para el state
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=1 and task.User=:userId')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
