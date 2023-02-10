@@ -91,6 +91,6 @@ class EventController extends AbstractController
     {
         $taskId = $eventRepository->createEventAlmacen($this->getUser(), $taskRepository);
 
-        return $this->redirectToRoute('app_task_update_State', ['id' => $taskId, 'state'], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_task_update_State', ['id' => $taskId], Response::HTTP_SEE_OTHER);
     }
 }
