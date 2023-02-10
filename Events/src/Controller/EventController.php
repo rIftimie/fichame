@@ -8,7 +8,7 @@ use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 use App\Repository\TaskRepository;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,11 +83,14 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
+    /**
+     * @isGranted("ROLE_ALMACEN")
+     */
+    #[Route('/newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
     public function newAlmacen(Request $request, EventRepository $eventRepository, TaskRepository $taskRepository): Response
     {
         $eventRepository->createEventAlmacen($this->getUser(), $taskRepository);
 
-        return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
     }
 }

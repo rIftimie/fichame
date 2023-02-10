@@ -53,6 +53,17 @@ class TaskRepository extends ServiceEntityRepository
 
     }
 
+    public function createAsignedTask(Event $event, User $user): void
+    {
+
+        $task = new Task();
+        $task->setUser($user);
+        $task->setEvent($event);
+        $task->setState(1);
+        $this->save($task, true);
+
+    }
+
 
     /**
      * @return Task[] Returns an array of Task objects
