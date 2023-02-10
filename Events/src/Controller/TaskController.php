@@ -48,8 +48,8 @@ class TaskController extends AbstractController
 
         //En state 1 es Asignado
         //En state NULL es no asignado
-        
-        $breakTime=$request->get("breakHours");
+
+        $breakTime = $request->get("breakHours");
 
         $task->setBreakTime($breakTime);
 
@@ -57,17 +57,24 @@ class TaskController extends AbstractController
         // $task->setState($state);
 
 
-        if($state==1){
-            $fecha= new \DateTime();
-            $task->setStartTime($fecha);        
+        if ($state == 1)
+        {
+            $fecha = new \DateTime();
+            $task->setStartTime($fecha);
 
-            
-        }else{
 
-            $fecha= new \DateTime();
+        }
+        else
+        {
+
+            $fecha = new \DateTime();
             $task->setEndTime($fecha);
-            
-            $state_request=2;
+            $date = $task->getStartTime();
+            if (!date_format($task->getStartTime(), 'Y/m/d') == date_format($task->getEvent()->getEndDate(), 'Y/m/d'))
+            {
+                $taskRepository->createAsignedTask($task->getEvent(), $this->getUser());
+            }
+            $state_request = 2;
         }
 
         // $task->setStateRequest($state_request);
@@ -76,8 +83,8 @@ class TaskController extends AbstractController
 
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-        
-    
+
+
 
     }
 }
