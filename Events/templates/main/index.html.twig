@@ -83,6 +83,7 @@
 
 
 			{% endfor %}
+
 <br> <a href="{{ path('app_task_accepted', {'id': app.user.id}) }}"><button type="button" >VER TAREAS ACEPTADAS</button></a><br>
 
 			{% for task in tasks %}
@@ -90,7 +91,6 @@
 				<ul>
 					<li>
 						Nombre:{{task.event.name}}<br>
-						<input type="number">
 
 						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 1}) }}">
 							<button type="button">ACEPTAR</button>
@@ -102,13 +102,7 @@
 
 					</li>
 
-
-
-
 				</ul>
-
-
-
 
 			{% endfor %}
 		{% endif %}
