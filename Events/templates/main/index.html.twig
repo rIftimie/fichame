@@ -39,8 +39,11 @@
 
 		{% if is_granted("ROLE_ADMIN")%}
 			-
-			<a href="/articulo">
-				Crear/Modificar Articulos</a>
+			<a href="{{ path('app_task') }}"> 
+				Crear/Modificar tareas</a>
+			-
+			<a href="{{path('app_ seeTaskToday') }}"> 
+				Ver tareas de hoy</a>
 			-
 			<a href="/user">Editar Usuarios</a>
 		{% endif %}
@@ -53,7 +56,7 @@
 
 				<ul>
 					<li>
-						Nombre:{{task.Event.name}}<br>
+						Nombre de la tarea:{{task.Event.name}}<br>
 						
                         {% if (task.isState()== NULL) %}
 
