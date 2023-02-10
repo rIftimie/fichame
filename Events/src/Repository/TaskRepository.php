@@ -71,6 +71,8 @@ class TaskRepository extends ServiceEntityRepository
     }
 
 
+
+
     public function showAsignByUser(User $user): array
     {
         //Esto es para el state
