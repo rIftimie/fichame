@@ -4,54 +4,60 @@
 
 {% block body %}
 
-
-
-<div id="calendar"></div>
 {% block javascripts %}
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js" integrity="sha256-z82jYOK/utiAteR0z6FjIOQmdWzvxqXJ6wsXbGJkBwY=" crossorigin="anonymous"></script><!-- JS for full calender -->
-{% endblock %}
-<!-- Start popup dialog box -->
-<div class="modal fade" id="event_entry_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-md" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modalLabel">Add New Event</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="img-container">
-					<div class="row">
-						<div class="col-sm-12">  
-							<div class="form-group">
-							  <label for="event_name">Event name</label>
-							  <input type="text" name="event_name" id="event_name" class="form-control" placeholder="Enter your event name">
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-6">  
-							<div class="form-group">
-							  <label for="event_start_date">Event start</label>
-							  <input type="date" name="event_start_date" id="event_start_date" class="form-control onlydatepicker" placeholder="Event start date">
-							 </div>
-						</div>
-						<div class="col-sm-6">  
-							<div class="form-group">
-							  <label for="event_end_date">Event end</label>
-							  <input type="date" name="event_end_date" id="event_end_date" class="form-control" placeholder="Event end date">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" onclick="save_event()">Save Event</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- End popup dialog box -->
 
+{#
+<script src='js/index.global.min.js'></script>
+<script src='js/index.js' ></script>    #}
+{% endblock %}
+
+{#
+<div id="calendar"></div>
+#}
+
+
+
+   {# 
+<table class="table">
+        <thead>
+         
+            <tr>
+                     
+              
+              
+                <th>Id</th>
+                <th>Estado</th>  
+              
+               <th>Desc</th>
+                {# <th>Autor </th> 
+               
+            </tr>
+        
+       #}
+        {% for task in tasks %}       
+           
+              {#  <td><b>{{ noticia.id }}<b></td> #}
+            
+                <h3>Tarea ID:<b>{{ task.id}}</b></h3>
+                <p>Estado: {{task.state}}</p>
+                <p>Estado Request: {{task.getStateRequest}}</p>
+                <p>User: {{task.user}}</p>
+                <p>Evento: {{task.event}}</p>
+                <p>Hora de Comienzo: {{task.getStartTime| date ('y-M-d H:m')}}</p>
+                <p>Hora de Fin: {{task.getEndTime| date ('y-M-d H:m')}}</p>
+
+
+              {#  <p>Estado reques : {{task.state_request}}</p>
+               
+                <p>Estado: {{task.start_time | date ('d/m/y')}}</p> #}
+
+              
+
+             {#   <p> <form method="POST" action="{{path('app_comentario_edit',{'id':comentario.id })}}"> #}
+
+             <form method="POST" action="#">
+                        <input role="button" class="BotonMargenIz btn btn-success" onclick="return confirm('¿Vas de modificar una tarea?')" class="BotonMargenIz" type="submit" value="Editar tarea"> </p>
+                    </form>
+                 
+             {% endfor %}     
 {% endblock %}

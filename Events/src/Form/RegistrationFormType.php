@@ -23,6 +23,7 @@ class RegistrationFormType extends AbstractType
             ->add('address')
             ->add('phoneNumber')
             ->add('dni')
+            ->add('regDate')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -48,6 +49,17 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+
+            ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You should agree to our terms.',
+                    ]),
+                ],
+            ]) 
+
+
         ;
     }
 
