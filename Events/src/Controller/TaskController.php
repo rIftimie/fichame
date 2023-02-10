@@ -8,24 +8,32 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TaskRepository;
 use App\Entity\Task;
-
 class TaskController extends AbstractController
 {
     #[Route('/task', name: 'app_task')]
-    public function index(): Response
+    public function index(TaskRepository $taskRepository): Response
     {
+  
+        
         return $this->render('task/index.html.twig', [
             'controller_name' => 'TaskController',
+            'tasks' => $taskRepository->findAll()
+            
         ]);
     }
 
     #[Route('/{id}/edit/{state_request}', name: 'app_task_edit_State_request', methods: ['GET', 'POST'])]
     public function editState_request(Request $request, int $state_request,Task $task, TaskRepository $taskRepository): Response
     {
-        //El estado 1 es Aceptado
-        //El estado 2 es Rechazado
-        //El estado 3 es Asignado
-        //El estado 4 es Terminado
+        
+        
+
+       //El estado 1 es Aceptado
+       //El estado 0 es Rechazado
+       //El estado 2 es Asignado
+       //El estado 3 es Terminado
+
+
             $task->setStateRequest($state_request);
 
             $taskRepository->save($task, true);
@@ -36,15 +44,27 @@ class TaskController extends AbstractController
         
     }
     
-    #[Route('/{id}/editState/{state}/{}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
+    #[Route('/{id}/editState/{state}', name: 'app_task_edit_State', methods: ['GET', 'POST'])]
     public function editState(Request $request, int $state,Task $task, TaskRepository $taskRepository): Response
     {
 
 
        //En state 1 es Comenzado
        //En state 2 es parado
+           $tiempoDescanso = $request->get('tiempoDescanso');
         
+           if($state==0){
+
+            $stateRequest=3;
+           }else{
+
+            $stateRequest=2;
+           }
+           
+            $task->setBreakTime($tiempoDescanso);
+            $task->setStateRequest($stateRequest);
             $task->setState($state);
+            
 
             $taskRepository->save($task, true);
 
@@ -59,14 +79,14 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            dd($task);
             $task->setExtraTime($form->get('extra_time')->getData());
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
-        }else{
-            dd($request); //Esto es a modo de prueba, ni caso
         }
+            dd($request); //Esto es a modo de prueba, ni caso
+        
 
     }
     #[Route('/{id}/task',name: 'app_task_accepted')]
