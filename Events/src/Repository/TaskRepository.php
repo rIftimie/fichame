@@ -56,7 +56,7 @@ class TaskRepository extends ServiceEntityRepository
 
     }
 
-    public function createAsignedTask(Event $event, User $user): void
+    public function createAsignedTask(Event $event, User $user): int
     {
 
         $task = new Task();
@@ -64,7 +64,7 @@ class TaskRepository extends ServiceEntityRepository
         $task->setEvent($event);
         $task->setState(1);
         $this->save($task, true);
-
+        return $task->getId();
     }
 
 

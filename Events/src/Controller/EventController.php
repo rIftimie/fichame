@@ -89,8 +89,8 @@ class EventController extends AbstractController
     #[Route('/newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
     public function newAlmacen(Request $request, EventRepository $eventRepository, TaskRepository $taskRepository): Response
     {
-        $eventRepository->createEventAlmacen($this->getUser(), $taskRepository);
+        $taskId = $eventRepository->createEventAlmacen($this->getUser(), $taskRepository);
 
-        return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_task_update_State', ['id' => $taskId], Response::HTTP_SEE_OTHER);
     }
 }
