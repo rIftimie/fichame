@@ -26,14 +26,17 @@ class Task
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $state_request = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $extra_time = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $extra_time = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?User $User = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?Event $Event = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $breakTime = null;
 
     public function getId(): ?int
     {
@@ -88,12 +91,12 @@ class Task
         return $this;
     }
 
-    public function getExtraTime(): ?\DateTimeInterface
+    public function getExtraTime()
     {
         return $this->extra_time;
     }
 
-    public function setExtraTime(?\DateTimeInterface $extra_time): self
+    public function setExtraTime( $extra_time): self
     {
         $this->extra_time = $extra_time;
 
@@ -120,6 +123,18 @@ class Task
     public function setEvent(?Event $Event): self
     {
         $this->Event = $Event;
+
+        return $this;
+    }
+
+    public function getBreakTime(): ?int
+    {
+        return $this->breakTime;
+    }
+
+    public function setBreakTime(?int $breakTime): self
+    {
+        $this->breakTime = $breakTime;
 
         return $this;
     }
