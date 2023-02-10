@@ -2,29 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Event;
+use App\Entity\Booking;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventType extends AbstractType
+class BookingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('schedule')
-            ->add('linkInformation')
-            ->add('eventCategory')
-            ->add('linkForm')
-            ->add('workers_number')
+            ->add('beginAt')
+            ->add('endAt')
+            ->add('title')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Event::class,
+            'data_class' => Booking::class,
         ]);
     }
 }

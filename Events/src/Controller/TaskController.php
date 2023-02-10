@@ -8,14 +8,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TaskRepository;
 use App\Entity\Task;
-
 class TaskController extends AbstractController
 {
     #[Route('/task', name: 'app_task')]
-    public function index(): Response
+    public function index(TaskRepository $taskRepository): Response
     {
+  
+        
         return $this->render('task/index.html.twig', [
             'controller_name' => 'TaskController',
+            'tasks' => $taskRepository->findAll()
+            
         ]);
     }
 
@@ -90,12 +93,35 @@ class TaskController extends AbstractController
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+
+        }    
+        #[Route('/{id}/editExtra}', name: 'app_task_edit_extra', methods: ['GET', 'POST'])]
+    public function editExtra(Request $request, Task $task, TaskRepository $taskRepository): Response
+    {
+        
+        $form = $this->createForm(EventType::class, $task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($task);
+            $task->setExtraTime($form->get('extra_time')->getData());
+            $taskRepository->save($task, true);
+
+            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        }
+            dd($request); //Esto es a modo de prueba, ni caso
         
 
-        
     }
-
-    
+    #[Route('/{id}/task',name: 'app_task_accepted')]
+    public function getAcceptedTasks(Request $request, TaskRepository $taskRepository): Response{
+        $tasks = $taskRepository->findBy(["state_request"=>'1',
+                                          "User" => $this->getUser()->getId()
+                                         ]);
+        return $this->render('task/extra.html.twig', [
+            'tasks' => $tasks,
+        ]);
+    }
 
 
 }

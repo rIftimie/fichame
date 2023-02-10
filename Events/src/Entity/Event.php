@@ -32,6 +32,9 @@ class Event
     private ?string $linkInformation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $eventCategory = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $linkForm = null;
 
     #[ORM\Column]
@@ -109,6 +112,18 @@ class Event
     public function setLinkInformation(string $linkInformation): self
     {
         $this->linkInformation = $linkInformation;
+
+        return $this;
+    }
+
+    public function getEventCategory(): ?string
+    {
+        return $this->eventCategory;
+    }
+
+    public function setEventCategory(?string $eventCategory): self
+    {
+        $this->eventCategory = $eventCategory;
 
         return $this;
     }
