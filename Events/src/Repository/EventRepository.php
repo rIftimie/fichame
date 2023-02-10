@@ -44,14 +44,15 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
-    public function createEventAlmacen(User $user, TaskRepository $taskRepository): void
+    public function createEventAlmacen(User $user, TaskRepository $taskRepository)
     {
         $event = new Event();
         $event->setName('Almcacen');
         $event->setStartDate(new \DateTime());
         $event->setEndDate(new \DateTime());
-        $taskRepository->createTask($event, $user);
+        $taskId = $taskRepository->createAsignedTask($event, $user);
         $this->save($event, true);
+        return $taskId;
     }
 
 //    /**
