@@ -76,7 +76,7 @@ class TaskRepository extends ServiceEntityRepository
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=3 and task.User=:userId')
+            ->andWhere('task.state_request=3git  and task.User=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
