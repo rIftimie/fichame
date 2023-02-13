@@ -6,6 +6,7 @@ use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EventType extends AbstractType
 {
@@ -15,7 +16,10 @@ class EventType extends AbstractType
             ->add('name')
             ->add('schedule')
             ->add('linkInformation')
-            ->add('eventCategory')
+            ->add('eventCategory', ChoiceType::class, [
+                'expanded' => true,
+                'multiple' => true
+            ])
             ->add('linkForm')
             ->add('workers_number')
         ;

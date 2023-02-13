@@ -45,12 +45,26 @@ class TaskRepository extends ServiceEntityRepository
 
     public function createTask(Event $event, User $user): void
     {
+        $task = new Task();
+        $task->setUser($user);
+        if ($task -> getUser() -> getRoles() == "ROLE_ALMACEN") {
+            $task -> settype(1);
+            $task -> getStartTime();
+            $task->setEvent($event);
+        }
+        $this->save($task, true);
+
+    }
+
+    public function createAsignedTask(Event $event, User $user): int
+    {
 
         $task = new Task();
         $task->setUser($user);
         $task->setEvent($event);
+        $task->setState(1);
         $this->save($task, true);
-
+        return $task->getId();
     }
 
 
@@ -59,7 +73,7 @@ class TaskRepository extends ServiceEntityRepository
      */
     public function showPendingTasksByUser(User $user): array
     {
-
+        //Esto es para el state_request
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
@@ -70,18 +84,67 @@ class TaskRepository extends ServiceEntityRepository
         ;
     }
 
+
+
+
     public function showAsignByUser(User $user): array
     {
-
+        //Esto es para el state
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=3git  and task.User=:userId')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
         ;
     }
+
+    public function showAsignByUserUncompleted(User $user): array
+    {
+        //Esto es para el state
+        $userId = $user->getId();
+        $date= new \DateTime();
+        $now=$date->format('Y-m-d');
+
+
+        $return=$this->createQueryBuilder('task')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.end_time is NULL and task.start_time is not NULL')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult()
+        ;
+        if(count($return)>0){
+            
+            return $return;
+    
+        }else{
+
+            return $this->createQueryBuilder('task')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.start_time LIKE :date')
+            ->setParameter('userId', $userId)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult()
+            ;
+        }
+        // var_dump($return);
+        // die();
+    }
+
+//    public function showAsignByUser(User $user): array
+//    {
+
+//     $userId=$user->getId();
+
+//        return $this->createQueryBuilder('task')
+//            ->andWhere('task.state_request=3 and task.User=:userId and task.state=:state')
+//            ->setParameter('userId', $userId)
+//            ->setParameter('state', 1)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
 
 
 
