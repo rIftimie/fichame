@@ -28,6 +28,7 @@ class MainController extends AbstractController
             
                 'tasks' => $taskRepository->showPendingTasksByUser($user),
                 'taskAsignments' => $taskRepository->showAsignTasksByUser($user),
+                
 
             ]);
             
