@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\EventCategory;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Repository\EventCategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\TaskRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -43,6 +44,18 @@ class EventController extends AbstractController
             'event' => $event,
             'form' => $form,
         ]);
+    }
+      /**
+     * @isGranted("ROLE_ALMACEN")
+     */
+    #[Route('/newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
+    public function newAlmacen(Request $request, EventRepository $eventRepository, TaskRepository $taskRepository, EventCategoryRepository $eventCategoryRepository): Response
+    {
+        
+        $taskId = $eventRepository->createEventAlmacen($this->getUser(), $taskRepository, $eventCategoryRepository);
+        
+
+        return $this->redirectToRoute('app_task_update_State', ['id' => $taskId], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
@@ -83,14 +96,5 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @isGranted("ROLE_ALMACEN")
-     */
-    #[Route('/newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
-    public function newAlmacen(Request $request, EventRepository $eventRepository, TaskRepository $taskRepository): Response
-    {
-        $taskId = $eventRepository->createEventAlmacen($this->getUser(), $taskRepository);
-
-        return $this->redirectToRoute('app_task_update_State', ['id' => $taskId], Response::HTTP_SEE_OTHER);
-    }
+  
 }
