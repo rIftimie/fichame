@@ -41,7 +41,7 @@ class TaskController extends AbstractController
 
     }
 
-    #[Route('/{id}/updateState/{state}', name: 'app_task_update_State', methods: ['GET', 'POST'])]
+    #[Route('/{id}/updateState', name: 'app_task_update_State', methods: ['GET', 'POST'])]
     public function UpdateState(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
 
@@ -55,26 +55,27 @@ class TaskController extends AbstractController
 
         // $task->setState($state);
 
-
-        if ($state == 1)
-        {
-            $fecha = new \DateTime();
-            $task->setStartTime($fecha);
-
-
-        }
-        else
-        {
-
-            $fecha = new \DateTime();
+        // $state= $task->isState();
+        
+        
+        if($task->getStartTime()!=NULL){
+            $fecha= new \DateTime();
             $task->setEndTime($fecha);
-            $date = $task->getStartTime();
-            if (!date_format($task->getStartTime(), 'Y/m/d') == date_format($task->getEvent()->getEndDate(), 'Y/m/d'))
-            {
-                $taskRepository->createAsignedTask($task->getEvent(), $this->getUser());
-            }
-            $state_request = 2;
+        
+        }else{
+            $fecha= new \DateTime();
+            $task->setStartTime($fecha);        
+
+            
         }
+
+        
+
+
+            
+            
+            // $state_request=2;
+        
 
         // $task->setStateRequest($state_request);
         $taskRepository->save($task, true);

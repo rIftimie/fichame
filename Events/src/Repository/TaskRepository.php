@@ -99,6 +99,38 @@ class TaskRepository extends ServiceEntityRepository
         ;
     }
 
+    public function showAsignByUserUncompleted(User $user): array
+    {
+        //Esto es para el state
+        $userId = $user->getId();
+        $date= new \DateTime();
+        $now=$date->format('Y-m-d');
+
+
+        $return=$this->createQueryBuilder('task')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.end_time is NULL and task.start_time is not NULL')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult()
+        ;
+        if(count($return)>0){
+            
+            return $return;
+    
+        }else{
+
+            return $this->createQueryBuilder('task')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.start_time LIKE :date')
+            ->setParameter('userId', $userId)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult()
+            ;
+        }
+        // var_dump($return);
+        // die();
+    }
+
 //    public function showAsignByUser(User $user): array
 //    {
 
