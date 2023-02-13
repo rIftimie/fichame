@@ -6,6 +6,9 @@ use App\Entity\Event;
 use App\Entity\EventCategory;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Repository\UserRepository;
+use App\Repository\TaskRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,13 +26,14 @@ class EventController extends AbstractController
     }
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function new(EventCategory $eventCategory, Request $request, EventRepository $eventRepository): Response
+    public function new (Request $request, EventRepository $eventRepository, UserRepository $userRepository, TaskRepository $taskRepository): Response
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $eventRepository->save($event, true);
 
             return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
@@ -55,7 +59,8 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $eventRepository->save($event, true);
 
             return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
@@ -70,10 +75,22 @@ class EventController extends AbstractController
     #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EventRepository $eventRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('_token')))
+        {
             $eventRepository->remove($event, true);
         }
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @isGranted("ROLE_ALMACEN")
+     */
+    #[Route('/newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
+    public function newAlmacen(Request $request, EventRepository $eventRepository, TaskRepository $taskRepository): Response
+    {
+        $taskId = $eventRepository->createEventAlmacen($this->getUser(), $taskRepository);
+
+        return $this->redirectToRoute('app_task_update_State', ['id' => $taskId], Response::HTTP_SEE_OTHER);
     }
 }

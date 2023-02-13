@@ -55,6 +55,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->save($user, true);
     }
+    
+    public function checkDNI(string $dni): bool
+    {
+        $dniLetters = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        $letter = substr($dni, 0, 8) % 23;
+        return substr($dni, -1) == $dniLetters[$letter];
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

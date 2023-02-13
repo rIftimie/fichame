@@ -35,6 +35,15 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?Event $Event = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $breakTime = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $statusResolveDate = null;
+
+    #[ORM\Column]
+    private ?int $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +129,42 @@ class Task
     public function setEvent(?Event $Event): self
     {
         $this->Event = $Event;
+
+        return $this;
+    }
+
+    public function getBreakTime(): ?int
+    {
+        return $this->breakTime;
+    }
+
+    public function setBreakTime(?int $breakTime): self
+    {
+        $this->breakTime = $breakTime;
+
+        return $this;
+    }
+
+    public function getStatusResolveDate(): ?\DateTimeInterface
+    {
+        return $this->statusResolveDate;
+    }
+
+    public function setStatusResolveDate(?\DateTimeInterface $statusResolveDate): self
+    {
+        $this->statusResolveDate = $statusResolveDate;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
