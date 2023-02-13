@@ -41,6 +41,9 @@ class Task
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $statusResolveDate = null;
 
+    #[ORM\Column]
+    private ?int $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +153,18 @@ class Task
     public function setStatusResolveDate(?\DateTimeInterface $statusResolveDate): self
     {
         $this->statusResolveDate = $statusResolveDate;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
