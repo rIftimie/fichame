@@ -283,14 +283,7 @@
             "branch": "main",
             "version": "1.1",
             "ref": "0c643e17b5340747b35c2c75e11727fa31bfa9bb"
-<<<<<<< HEAD
-        },
-        "files": [
-            "./config/routes/calendar.yaml"
-        ]
-=======
         }
->>>>>>> 55339ab5eb0cffd1217d5636adeb8d7d45e40e57
     },
     "twig/extra-bundle": {
         "version": "v3.5.0"
