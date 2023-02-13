@@ -53,7 +53,6 @@ class TaskRepository extends ServiceEntityRepository
             $task->setEvent($event);
         }
         $this->save($task, true);
-
     }
 
     public function createAsignedTask(Event $event, User $user): int
