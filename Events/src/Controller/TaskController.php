@@ -32,7 +32,9 @@ class TaskController extends AbstractController
         //El estado 1 es Aceptado
         //El estado 0 es Rechazado
 
+        $fecha= new \DateTime();
         $task->setStateRequest($state_request);
+        $task->setStatusResolveDate($fecha);
 
         $fecha= new \DateTime();
         $task-> setStatusResolveDate($fecha);
@@ -52,9 +54,9 @@ class TaskController extends AbstractController
         //En state NULL es no asignado
 
         $breakTime = $request->get("breakHours");
+        if(!$breakTime) $breakTime=0;
 
         $task->setBreakTime($breakTime);
-
         
 
         // $task->setState($state);

@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block body %}
+{% set showMessage = false %}
 	<style>
 		.example-wrapper {
 			margin: 1em auto;
@@ -49,13 +50,9 @@
 		{% endif %}
 
 
-		{% if is_granted("ROLE_ALMACEN")%}
-			<a href="{{path('app_event_newAlmacen') }}">
-				Crear Tarea</a>
-		{% endif %}
-
-
 		<br><br>
+
+		
 
 		{% if app.user %}
 
@@ -71,6 +68,7 @@
 								<button type="button">Comenzar Tarea</button>
 							</a>
 
+							{% set showMessage = true %}
 						{% else %}
 
 							<form action="{{ path('app_task_update_State', {'id': task.id}) }}">
@@ -81,7 +79,7 @@
 								<input type="number" placeholder="Tiempo de Descanso" name="breakHours"/>
 
 							</form>
-
+							{% set showMessage = false %}
 
 						{% endif %}
 
@@ -93,6 +91,17 @@
 
 
 			{% endfor %}
+
+			{% if showMessage %}
+
+				{% if is_granted("ROLE_ALMACEN")%}
+
+				<a href="{{path('app_event_newAlmacen') }}">
+				Almacen</a>
+				
+				{% endif %}
+
+			{% endif %}
 
 			{% for task in tasks %}
 

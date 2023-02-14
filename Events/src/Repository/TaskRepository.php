@@ -47,24 +47,28 @@ class TaskRepository extends ServiceEntityRepository
     {
         $task = new Task();
         $task->setUser($user);
+        $task->setEvent($event);
+        $task -> setType(0);
         if ($task -> getUser() -> getRoles() == "ROLE_ALMACEN") {
-            $task -> settype(1);
+            $task -> setType(1);
             $task -> getStartTime();
-            $task->setEvent($event);
+            
         }
+        
         $this->save($task, true);
-
     }
 
-    public function createAsignedTask(Event $event, User $user): int
+    public function createAsignedTask(Event $event, User $user): Task
     {
 
         $task = new Task();
         $task->setUser($user);
         $task->setEvent($event);
+        $task->setStateRequest(1);
         $task->setState(1);
+        $task->setType(0);
         $this->save($task, true);
-        return $task->getId();
+        return $task;
     }
 
 
@@ -107,7 +111,7 @@ class TaskRepository extends ServiceEntityRepository
         $date= new \DateTime();
         $now=$date->format('Y-m-d');
 
-//comprobamos si hay alguna tarea comenzada
+        //comprobamos si hay alguna tarea comenzada
         $return=$this->createQueryBuilder('task')
             ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.end_time is NULL and task.start_time is not NULL')
             ->setParameter('userId', $userId)
@@ -124,13 +128,12 @@ class TaskRepository extends ServiceEntityRepository
     
         }else{
 
-            
-//comprobamos si NO hay alguna tarea comenzada
-
+            //si no hay ninguna comenzada , sa
             return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.start_time LIKE :date')
+            ->join('task.Event', 'e')
+            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and e.start_date = :date and task.end_time is NULL')
             ->setParameter('userId', $userId)
-            ->setParameter('date', $date)
+            ->setParameter('date', $now)
             ->getQuery()
             ->getResult()
             ;
