@@ -107,18 +107,25 @@ class TaskRepository extends ServiceEntityRepository
         $date= new \DateTime();
         $now=$date->format('Y-m-d');
 
-
+//comprobamos si hay alguna tarea comenzada
         $return=$this->createQueryBuilder('task')
             ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.end_time is NULL and task.start_time is not NULL')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
         ;
+
+        // var_dump($return);
+        // die();
+        
         if(count($return)>0){
             
             return $return;
     
         }else{
+
+            
+//comprobamos si NO hay alguna tarea comenzada
 
             return $this->createQueryBuilder('task')
             ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.start_time LIKE :date')
@@ -128,8 +135,7 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult()
             ;
         }
-        // var_dump($return);
-        // die();
+        
     }
 
 //    public function showAsignByUser(User $user): array

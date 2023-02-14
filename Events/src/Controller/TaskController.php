@@ -34,6 +34,9 @@ class TaskController extends AbstractController
 
         $task->setStateRequest($state_request);
 
+        $fecha= new \DateTime();
+        $task-> setStatusResolveDate($fecha);
+
         $taskRepository->save($task, true);
 
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
@@ -52,6 +55,7 @@ class TaskController extends AbstractController
 
         $task->setBreakTime($breakTime);
 
+        
 
         // $task->setState($state);
 
@@ -68,6 +72,8 @@ class TaskController extends AbstractController
 
             
         }
+
+        
 
         
 

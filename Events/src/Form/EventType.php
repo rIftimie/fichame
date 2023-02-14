@@ -16,10 +16,7 @@ class EventType extends AbstractType
             ->add('name')
             ->add('schedule')
             ->add('linkInformation')
-            ->add('eventCategory', ChoiceType::class, [
-                'expanded' => true,
-                'multiple' => true
-            ])
+            ->add('category')
             ->add('linkForm')
             ->add('workers_number')
         ;
