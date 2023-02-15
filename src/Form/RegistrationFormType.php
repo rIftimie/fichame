@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
             ->add('address')
             ->add('phoneNumber')
             ->add('dni')
-            ->add('regDate')
+            ->add('monthlytime')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

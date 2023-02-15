@@ -53,8 +53,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Task::class)]
     private Collection $tasks;
 
+    #[ORM\Column]
+    private ?int $monthlytime = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $remaininghours = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastLogin = null;
     #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $naf = null;
 
     public function __construct()
     {
@@ -95,8 +107,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -212,29 +222,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->tasks;
     }
 
-    public function addTask(Task $task): self
+    public function __toString()
     {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks->add($task);
-            $task->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Task $task): self
-    {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getUser() === $this) {
-                $task->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-    public function __toString(){
         return $this->username;
+    }
+
+    public function getMonthlytime(): ?int
+    {
+        return $this->monthlytime;
+    }
+
+    public function setMonthlytime(int $monthlytime): int
+    {
+        return $this->monthlytime = $monthlytime;
     }
 
     public function getCompany(): ?Company
@@ -247,5 +247,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->company = $company;
 
         return $this;
+    }
+
+    public function getRemaininghours(): ?int
+    {
+        return $this->remaininghours;
+    }
+
+    public function setRemaininghours(?int $remaininghours): self
+    {
+        return $this->remaininghours += $remaininghours;
+    }
+        
+    public function getNaf(): ?string
+    {
+        return $this->naf;
+    }
+
+    public function setNaf(?string $naf): self
+    {
+        $this->naf = $naf;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+    
+    public function changeRemainingHours(){
+        if($this->lastLogin->format('m') != (new \Datetime('now'))->format('m')){
+            if((new \Datetime('now'))->format('m')=='01'){
+                $this->setRemaininghours($this->monthlytime);
+            }else{
+                $this->setRemaininghours(((new \Datetime('2023-03-12'))->format('m')-$this->lastLogin->format('m'))*$this->monthlytime);
+            }
+        }
     }
 }

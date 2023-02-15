@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,9 +21,6 @@ class Task
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $end_time = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $state = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $state_request = null;
@@ -54,7 +53,7 @@ class Task
         return $this->start_time;
     }
 
-    public function setStartTime(?\DateTimeInterface $start_time): self
+    public function setStart_Time(?\DateTimeInterface $start_time): self
     {
         $this->start_time = $start_time;
 
@@ -66,21 +65,9 @@ class Task
         return $this->end_time;
     }
 
-    public function setEndTime(?\DateTimeInterface $end_time): self
+    public function setEnd_Time(?\DateTimeInterface $end_time): self
     {
         $this->end_time = $end_time;
-
-        return $this;
-    }
-
-    public function isState(): ?bool
-    {
-        return $this->state;
-    }
-
-    public function setState(?bool $state): self
-    {
-        $this->state = $state;
 
         return $this;
     }
@@ -156,6 +143,20 @@ class Task
 
         return $this;
     }
+    public function removeJob(Job $job): self
+    {
+        if ($this->jobs->removeElement($job)) {
+            // set the owning side to null (unless already changed)
+            if ($job->getTaskId() === $this) {
+                $job->setTaskId(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString(): string {
+        return $this->id;
+    }
 
     public function getType(): ?int
     {
@@ -165,6 +166,28 @@ class Task
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getExtraTime(): ?int
+    {
+        return $this->extra_time;
+    }
+
+    public function setExtraTime(?int $extra_time): self
+    {
+        $this->extra_time = $extra_time;
+    }
+
+    public function getChore(): array
+    {
+        return $this->chore;
+    }
+
+    public function setChore(?array $chore): self
+    {
+        $this->chore = $chore;
 
         return $this;
     }

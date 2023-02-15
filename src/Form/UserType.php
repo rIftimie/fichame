@@ -31,10 +31,6 @@ class UserType extends AbstractType
             ->add('address')
             ->add('phoneNumber')
             ->add('dni')
-            ->add('regDate', DateTimeType::class, [
-                'mapped' => false
-            ]) 
-            
         ;
     }
 

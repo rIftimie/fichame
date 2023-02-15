@@ -24,16 +24,16 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
     private Collection $users;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Event::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Event::class, orphanRemoval: true)]
     private Collection $events;
 
     #[ORM\Column]
-    private ?bool $active = null;
+    private ?bool $active = true;
 
     #[ORM\Column(length: 255)]
     private ?string $ccc = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $salaryperhour = null;
 
     public function __construct()
@@ -143,6 +143,11 @@ class Company
         return $this;
     }
 
+    public function __toString(): String
+    {
+        return $this->nif;
+    }
+
     public function getCcc(): ?string
     {
         return $this->ccc;
@@ -160,7 +165,7 @@ class Company
         return $this->salaryperhour;
     }
 
-    public function setSalaryperhour(int $salaryperhour): self
+    public function setSalaryperhour(?int $salaryperhour): self
     {
         $this->salaryperhour = $salaryperhour;
 
