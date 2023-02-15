@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Repository\EventCategoryRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;
@@ -44,15 +45,24 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
-    public function createEventAlmacen(User $user, TaskRepository $taskRepository)
+    public function createEventAlmacen(User $user, TaskRepository $taskRepository, EventCategoryRepository $eventCategory)
     {
+        
         $event = new Event();
-        $event->setName('Almcacen');
+        $event->setName('Almacén');
         $event->setStartDate(new \DateTime());
         $event->setEndDate(new \DateTime());
-        $taskId = $taskRepository->createAsignedTask($event, $user);
+        $event->setSchedule("");
+        $event->setLinkInformation("");
+        $event->setWorkersNumber(1);
+        //Hay que definir cual es la categoria de almacen
+        $event->setEventCategory($eventCategory->find(1));
+        
         $this->save($event, true);
-        return $taskId;
+        $task = $taskRepository->createAsignedTask($event, $user);
+        $task->setType(1);
+        $taskRepository->save($task,true);
+        return $task->getId();
     }
 
 //    /**

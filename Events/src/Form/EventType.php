@@ -14,11 +14,17 @@ class EventType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('start_date')
+            ->add('end_date')   
             ->add('schedule')
             ->add('linkInformation')
-            ->add('eventCategory')
+            // ->add('eventCategory', ChoiceType::class, [
+            //     'expanded' => true,
+            //     'multiple' => true
+            // ])
             ->add('linkForm')
             ->add('workers_number')
+            ->add('category')
         ;
     }
 

@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block body %}
+{% set showMessage = false %}
 	<style>
 		.example-wrapper {
 			margin: 1em auto;
@@ -39,43 +40,48 @@
 
 		{% if is_granted("ROLE_ADMIN")%}
 			-
-			<a href="{{ path('app_task') }}"> 
-				Crear/Modificar tareas</a>
+			<a href="{{ path('app_event_index') }}">
+				Crear/Modificar eventos</a>
 			-
-			<a href="{{path('app_ seeTaskToday') }}"> 
+			<a href="{{path('app_ seeTaskToday') }}">
 				Ver tareas de hoy</a>
 			-
 			<a href="/user">Editar Usuarios</a>
 		{% endif %}
 
+
 		<br><br>
 
-		{% if app.user %}
 		
+
+		{% if app.user %}
+
 			{% for task in taskAsignments %}
 
 				<ul>
 					<li>
 						Nombre de la tarea:{{task.Event.name}}<br>
-						
-                        {% if (task.isState()== 1 and task.getStateRequest()==1 and task.getStartTime()== NULL) %}
+
+
+						{% if (task.isState()== 1 and task.getStateRequest()==1 and task.getStartTime()== NULL) %}
 
 							<a href="{{ path('app_task_update_State', {'id': task.id}) }}">
-							    <button type="button">Comenzar Tarea</button>
-						    </a>
+								<button type="button">Comenzar Tarea</button>
+							</a>
 
+							{% set showMessage = true %}
 						{% else %}
-						
-                            <form action="{{ path('app_task_update_State', {'id': task.id}) }}">
 
-                                <a>
-                                    <button type="submit">Terminar Tarea</button>
-                                </a>
-                                <input type="number" placeholder="Tiempo de Descanso" name="breakHours"/>
-                            
-                            </form>
-							
-                           
+							<form action="{{ path('app_task_update_State', {'id': task.id}) }}">
+
+								<a>
+									<button type="submit">Terminar Tarea</button>
+								</a>
+								<input type="number" placeholder="Tiempo de Descanso" name="breakHours"/>
+
+							</form>
+							{% set showMessage = false %}
+
 						{% endif %}
 					</li>
 
@@ -85,12 +91,23 @@
 
 			{% endfor %}
 
+			{% if showMessage %}
+
+				{% if is_granted("ROLE_ALMACEN")%}
+
+				<a href="{{path('app_event_newAlmacen') }}">
+				Almacen</a>
+				
+				{% endif %}
+
+			{% endif %}
+
 			{% for task in tasks %}
 
 				<ul>
 					<li>
 						Nombre:{{task.event.name}}<br>
-					
+
 						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 1}) }}">
 							<button type="button">ACEPTAR</button>
 						</a>
@@ -111,4 +128,3 @@
 
 	</div>
 {% endblock %}
-   
