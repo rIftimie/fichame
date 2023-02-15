@@ -112,19 +112,14 @@
 							<button type="button">ACEPTAR</button>
 						</a>
 						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 0}) }}">
+						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 0}) }}">
 							<button type="button">RECHAZAR</button>
 						</a>
 
 
 					</li>
 
-
-				</ul>
-
-
-			{% endfor %}
-		{% endif %}
-
+</div>
 
 	</div>
 {% endblock %}

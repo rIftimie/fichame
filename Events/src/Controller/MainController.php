@@ -9,7 +9,17 @@ use App\Repository\TaskRepository;
 
 class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_main')]
+    /**
+     * @Route("/", name="app_main")
+     */
+
+    // public function index(): Response
+    // {
+    //     return $this->render('main/index.html.twig') ([
+    //         'controller_name' => 'MainController',
+    //     ]);
+    // }
+
     public function index(TaskRepository $taskRepository): Response
     {
         $user = $this->getUser();
