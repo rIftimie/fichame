@@ -53,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Task::class)]
     private Collection $tasks;
 
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Company $company = null;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -232,5 +235,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     public function __toString(){
         return $this->username;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+
+        return $this;
     }
 }
