@@ -48,13 +48,14 @@ class TaskRepository extends ServiceEntityRepository
         $task = new Task();
         $task->setUser($user);
         $task->setEvent($event);
-        $task -> setType(0);
-        if ($task -> getUser() -> getRoles() == "ROLE_ALMACEN") {
-            $task -> setType(1);
-            $task -> getStartTime();
-            
+        $task->setType(0);
+        if ($task->getUser()->getRoles() == "ROLE_ALMACEN")
+        {
+            $task->setType(1);
+            $task->getStartTime();
+
         }
-        
+
         $this->save($task, true);
     }
 
@@ -108,33 +109,50 @@ class TaskRepository extends ServiceEntityRepository
     {
         //Esto es para el state
         $userId = $user->getId();
-        $date= new \DateTime();
-        $now=$date->format('Y-m-d');
+        $date = new \DateTime();
 
         //comprobamos si hay alguna tarea comenzada
-        $return=$this->createQueryBuilder('task')
+        $return = $this->createQueryBuilder('task')
             ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.end_time is NULL and task.start_time is not NULL')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
         ;
-        if(count($return)>0){
-            
-            return $return;
-    
-        }else{
+        if (count($return) > 0)
+        {
 
-            //si no hay ninguna comenzada , sa
+            return $return;
+
+        }
+        else
+        {
+            //si no hay ninguna comenzada
+            //task.state_request=1 and task.state=1 and task.User=:userId and e.start_time>= :date_start and task.end_time is NULL
             return $this->createQueryBuilder('task')
-            ->join('task.Event', 'e')
-            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and e.start_date = :date and task.end_time is NULL')
-            ->setParameter('userId', $userId)
-            ->setParameter('date', $now)
-            ->getQuery()
-            ->getResult()
+                ->join('task.Event', 'e')
+                ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and e.start_date>= :dateStart and task.end_time is NULL')
+                ->andWhere('e.start_date <= :dateEnd')
+                ->setParameter('userId', $userId)
+                ->setParameter('dateStart', $date->format('Y-m-d 00:00:00'))
+                ->setParameter('dateEnd', $date->format('Y-m-d 23:59:59'))
+                ->getQuery()
+                ->getResult()
             ;
         }
-        
+
+    }
+
+    public function findByUser(User $user): array
+    {
+        //Esto es para el state
+        $userId = $user->getId();
+
+        return $this->createQueryBuilder('task')
+            ->andWhere('task.User=:userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 //    public function showAsignByUser(User $user): array
