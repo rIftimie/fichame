@@ -89,6 +89,19 @@ class TaskRepository extends ServiceEntityRepository
         ;
     }
 
+    public function showAcceptedTasksByUser(User $user): array
+    {
+        //Esto es para el state_request
+        $userId = $user->getId();
+
+        return $this->createQueryBuilder('task')
+            ->andWhere('task.state_request=1 and task.User=:userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
 
 
