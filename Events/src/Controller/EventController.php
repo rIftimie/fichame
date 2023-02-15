@@ -37,7 +37,8 @@ class EventController extends AbstractController
         {
             $eventRepository->save($event, true);
 
-            foreach ($userRepository->findAll() as $user ) {
+            foreach ($userRepository->findAll() as $user)
+            {
 
                 $taskRepository->createTask($event, $user);
 
@@ -52,15 +53,15 @@ class EventController extends AbstractController
             'form' => $form,
         ]);
     }
-      /**
+    /**
      * @isGranted("ROLE_ALMACEN")
      */
     #[Route('/newAlmacen', name: 'app_event_newAlmacen', methods: ['GET', 'POST'])]
     public function newAlmacen(Request $request, EventRepository $eventRepository, TaskRepository $taskRepository, EventCategoryRepository $eventCategoryRepository): Response
     {
-        
+
         $taskId = $eventRepository->createEventAlmacen($this->getUser(), $taskRepository, $eventCategoryRepository);
-        
+
 
         return $this->redirectToRoute('app_task_update_State', ['id' => $taskId], Response::HTTP_SEE_OTHER);
     }
@@ -103,5 +104,5 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
 
-  
+
 }
