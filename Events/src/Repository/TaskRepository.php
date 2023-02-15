@@ -169,6 +169,20 @@ class TaskRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByPending(User $user): array
+    {
+        return $this->showPendingTasksByUser($user);
+    }
+    public function findByAssigned(User $user): array
+    {
+        return $this->showAsignByUser($user);
+    }
+
+    public function findByAccepted(User $user): array
+    {
+        return $this->showAcceptedTasksByUser($user);
+    }
+
     //    public function showAsignByUser(User $user): array
 //    {
 
