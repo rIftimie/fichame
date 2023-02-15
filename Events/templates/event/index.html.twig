@@ -23,10 +23,11 @@
         {% for event in events %}
             <tr>
                 <td>{{ event.name }}</td>
-                <td>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</td>
+                <td>{{ event.startDate|date('Y-m-d') }}</td>
+                <td>{{ event.endDate|date('Y-m-d')}}</td>
                 <td>{{ event.schedule }}</td>
                 <td>{{ event.linkInformation }}</td>
-                <td>{{ event.eventCategory }}</td>
+                <td>{{ event.eventCategory }}</td>        
                 <td>{{ event.linkForm }}</td>
                 <td>{{ event.workersNumber }}</td>
                 <td>

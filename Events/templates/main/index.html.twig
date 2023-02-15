@@ -40,8 +40,8 @@
 
 		{% if is_granted("ROLE_ADMIN")%}
 			-
-			<a href="{{ path('app_task') }}">
-				Crear/Modificar tareas</a>
+			<a href="{{ path('app_event_index') }}">
+				Crear/Modificar eventos</a>
 			-
 			<a href="{{path('app_ seeTaskToday') }}">
 				Ver tareas de hoy</a>
@@ -102,6 +102,10 @@
 				{% endif %}
 
 			{% endif %}
+									<a href="{{ path('app_seeAssignedTasks')}}"> 
+
+									<button type="button" style="margin: 20px;">VER TAREAS ACEPTADAS</button>
+
 
 			{% for task in tasks %}
 
@@ -113,19 +117,18 @@
 							<button type="button">ACEPTAR</button>
 						</a>
 						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 0}) }}">
+						<a href="{{ path('app_task_edit_State_request', {'id': task.id, 'state_request': 0}) }}">
 							<button type="button">RECHAZAR</button>
 						</a>
 
+						
+
 
 					</li>
-
-
-				</ul>
-
-
 			{% endfor %}
 		{% endif %}
 
+</div>
 
 		
 

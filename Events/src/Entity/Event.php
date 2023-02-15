@@ -46,6 +46,9 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?EventCategory $category = null;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?Company $company = null;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -195,5 +198,17 @@ class Event
     }
     public function __toString(){
         return $this->name;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+
+        return $this;
     }
 }
