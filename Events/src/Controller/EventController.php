@@ -27,7 +27,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function new (Request $request, EventRepository $eventRepository, UserRepository $userRepository, TaskRepository $taskRepository): Response
+    public function new (EventCategoryRepository $eventCategory,Request $request, EventRepository $eventRepository, UserRepository $userRepository, TaskRepository $taskRepository): Response
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -35,6 +35,8 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
+
+            $event->setEventCategory($form->get("category")->getData());
             $eventRepository->save($event, true);
 
             foreach ($userRepository->findAll() as $user)

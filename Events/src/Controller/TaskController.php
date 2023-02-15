@@ -63,14 +63,11 @@ class TaskController extends AbstractController
         // $state= $task->isState();
 
 
-        if ($task->getStartTime() != NULL)
-        {
+        if ($task->getStartTime() != NULL) {
             $fecha = new \DateTime();
             $task->setEndTime($fecha);
 
-        }
-        else
-        {
+        } else {
             $fecha = new \DateTime();
             $task->setStartTime($fecha);
 
@@ -93,6 +90,21 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
 
 
+
+    }
+    #[Route('/seeAsignedTasks', name: 'app_seeAsignedTasks', methods: ['GET', 'POST'])]
+
+    public function seeAsignedTasks(Request $request, TaskRepository $taskRepository): Response
+    {
+        $tasks = $taskRepository->findAllBy([
+            'state => 1',
+            'user => ' + $this->getUser()
+        ]
+        );
+
+        return $this->redirectToRoute('task/index.html.twig',[
+            'tasks' => $tasks
+        ]);
 
     }
 
