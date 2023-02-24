@@ -1,6 +1,8 @@
 <?php
+namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,13 +20,13 @@ class TaskController extends AbstractController
 
     public function seeAsignedTasks(Request $request, TaskRepository $taskRepository): Response
     {
-        $tasks = $taskRepository->findAllBy([
-            'state => 1',
-            'user => ' + $this->getUser()
+        $tasks = $taskRepository->findBy([
+            'state' => 1,
+            'user' => $this->getUser()
         ]
         );
 
-        return $this->redirectToRoute('task/index.html.twig',[
+        return $this->render('task/index.html.twig',[
             'tasks' => $tasks
         ]);
 
@@ -115,7 +117,6 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit/{state_request}', name: 'app_task_edit_State_request', methods: ['GET', 'POST'])]
     public function editState_request(Request $request, int $state_request, Task $task, TaskRepository $taskRepository): Response
     {
@@ -139,7 +140,6 @@ class TaskController extends AbstractController
 
     }
 
-    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/updateState', name: 'app_task_update_State', methods: ['GET', 'POST'])]
     public function UpdateState(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
@@ -153,19 +153,16 @@ class TaskController extends AbstractController
 
         $task->setBreakTime($breakTime);
 
-
-        // $task->setState($state);
-
-        // $state= $task->isState();
-
-
-        if ($task->getStartTime() != NULL) {
-            $fecha = new \DateTime();
-            $task->setEndTime($fecha);
-
-        } else {
-            $fecha = new \DateTime();
-            $task->setStartTime($fecha);
+        $fecha= new \DateTime();
+        if($task->getStartTime()!=NULL){
+            if ($task->getStartTime() != $task->getEvent()->getEndDate()){
+                $taskRepository->createTomorrowTask($task->getEvent(),$this->getUser(),$task->getStartTime() );
+            }
+            $task->setEnd_Time($fecha);
+        
+        }else{
+            $task->setStart_Time($fecha);   
+            $task->setStartTimeCompare($fecha);
 
         }
         // $task->setStateRequest($state_request);
@@ -174,5 +171,32 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
 
     }
-  
+    #[Route('/admin/task/{id}/resolve', name: 'app_task_resolve', methods: ["GET"])]
+    public function resolve(Task $task, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $entityManager = $doctrine->getManager();
+
+        $state = $request->get("state");
+        $coordinator = $request->get("coordinator");
+        $driver = $request->get("driver");
+
+        if(isset($state)){
+            if($state == 1 || $state == 0){
+                $task->setState($state);
+                $entityManager->flush();
+            }
+        }
+        if($coordinator && $driver){
+            $task->setChore(["ROLE_DRIVER","ROLE_COORDINATOR"]);
+            $entityManager->flush();
+        } else if($coordinator){
+            $task->setChore(["ROLE_COORDINATOR"]);
+            $entityManager->flush();
+        } else if($driver){
+            $task->setChore(["ROLE_DRIVER"]);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_event_report', ["id" => $task->getEvent()->getId()], Response::HTTP_SEE_OTHER);
+    }
 }

@@ -23,6 +23,9 @@ class Job
     #[ORM\JoinColumn(nullable: false)]
     private ?Task $task_id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'jobs')]
+    private ?Task $task = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Job
     public function setTaskId(?Task $task_id): self
     {
         $this->task_id = $task_id;
+
+        return $this;
+    }
+
+    public function getTask(): ?Task
+    {
+        return $this->task;
+    }
+
+    public function setTask(?Task $task): self
+    {
+        $this->task = $task;
 
         return $this;
     }

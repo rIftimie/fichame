@@ -45,7 +45,7 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
-    public function createEventAlmacen(User $user, TaskRepository $taskRepository, EventCategoryRepository $eventCategory)
+    public function createEventAlmacen(User $user, TaskRepository $taskRepository, EventCategoryRepository $eventCategoryRepository)
     {
         
         $event = new Event();
@@ -55,8 +55,10 @@ class EventRepository extends ServiceEntityRepository
         $event->setSchedule("");
         $event->setLinkInformation("");
         $event->setWorkersNumber(1);
+        $event->setCompany($user->getCompany());
+
         //Hay que definir cual es la categoria de almacen
-        $event->setEventCategory($eventCategory->find(1));
+        $event->setCategory($eventCategoryRepository->find(1));
         
         $this->save($event, true);
         $task = $taskRepository->createAsignedTask($event, $user);

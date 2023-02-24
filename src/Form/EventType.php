@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType ;
 
 class EventType extends AbstractType
 {
@@ -14,8 +16,8 @@ class EventType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('start_date')
-            ->add('end_date')   
+            ->add('start_date', DateType::class)
+            ->add('end_date', DateType::class)   
             ->add('schedule')
             ->add('linkInformation')
             ->add('linkForm')

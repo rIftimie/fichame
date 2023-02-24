@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $regDate = null;
 
-    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Task::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Task::class)]
     private Collection $tasks;
 
     #[ORM\Column]

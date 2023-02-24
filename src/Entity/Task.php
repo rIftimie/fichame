@@ -29,7 +29,7 @@ class Task
     private ?int $extra_time = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
-    private ?User $User = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?Event $Event = null;
@@ -42,6 +42,23 @@ class Task
 
     #[ORM\Column]
     private ?int $type = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $state = null;
+
+    #[ORM\OneToMany(mappedBy: 'task', targetEntity: Job::class)]
+    private Collection $jobs;
+
+    #[ORM\Column(nullable: true)]
+    private array $chore = [];
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $startTimeCompare = null;
+
+    public function __construct()
+    {
+        $this->jobs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -84,26 +101,15 @@ class Task
         return $this;
     }
 
-    public function getExtraTime()
-    {
-        return $this->extra_time;
-    }
-
-    public function setExtraTime( $extra_time): self
-    {
-        $this->extra_time = $extra_time;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
-    public function setUser(?User $User): self
+    public function setUser(?User $user): self
     {
-        $this->User = $User;
+        $this->user = $user;
 
         return $this;
     }
@@ -188,6 +194,55 @@ class Task
     public function setChore(?array $chore): self
     {
         $this->chore = $chore;
+
+        return $this;
+    }
+
+    public function isState(): ?bool
+    {
+        return $this->state;
+    }
+
+    public function setState(?bool $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+    public function getTotalTime(): int
+    {
+    $res=0;
+    $res= ($this->end_time->getTimestamp()-$this->start_time->getTimestamp()+$this->extra_time)/(3600);
+
+    return $res;
+    }
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
+    }
+
+    public function addJob(Job $job): self
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+            $job->setTask($this);
+        }
+
+        return $this;
+    }
+
+    public function getStartTimeCompare(): ?\DateTimeInterface
+    {
+        return $this->startTimeCompare;
+    }
+
+    public function setStartTimeCompare(?\DateTimeInterface $startTimeCompare): self
+    {
+        $this->startTimeCompare = $startTimeCompare;
 
         return $this;
     }

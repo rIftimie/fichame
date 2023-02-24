@@ -39,8 +39,6 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?EventCategory $category = null;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
-    private ?Company $company = null;
 
     #[ORM\Column]
     private ?int $hidden = 0;

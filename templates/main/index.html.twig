@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-{% set showMessage = false %}
+{% set showMessage = true %}
 	<style>
 		.example-wrapper {
 			margin: 1em auto;
@@ -68,7 +68,6 @@
 								<button type="button">Comenzar Tarea</button>
 							</a>
 
-							{% set showMessage = true %}
 						{% else %}
 
 							<form action="{{ path('app_task_update_State', {'id': task.id}) }}">
@@ -96,13 +95,13 @@
 
 				{% if is_granted("ROLE_ALMACEN")%}
 
-				<a href="{{path('app_event_newAlmacen') }}">
-				Almacen</a>
+          <a href="{{path('app_event_newAlmacen') }}">
+          Almacen</a>
 				
 				{% endif %}
 
 			{% endif %}
-									<a href="{{ path('app_seeAssignedTasks')}}"> 
+									<a href="{{ path('app_seeAsignedTasks')}}"> 
 
 									<button type="button" style="margin: 20px;">VER TAREAS ACEPTADAS</button>
 

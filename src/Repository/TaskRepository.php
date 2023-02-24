@@ -49,11 +49,12 @@ class TaskRepository extends ServiceEntityRepository
         $task->setUser($user);
         $task->setEvent($event);
         $task->setType(0);
+        $task->setStartTimeCompare($event->getStartDate());
+
         if ($task->getUser()->getRoles() == "ROLE_ALMACEN")
         {
             $task->setType(1);
             $task->getStartTime();
-
         }
 
         $this->save($task, true);
@@ -82,7 +83,7 @@ class TaskRepository extends ServiceEntityRepository
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request is NULL and task.User=:userId')
+            ->andWhere('task.state_request is NULL and task.user=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
            ->getResult()
@@ -103,10 +104,12 @@ class TaskRepository extends ServiceEntityRepository
    public function getHorasRealizadas($arr){
     $salida = [];
     foreach($arr as $task) {
-            $time = $task['st']->diff($task['et']);
-            $salida = [$task['id'], $time->days*24+$time->h+($task['ext']*60)/(3600)];
-        }
-        return $salida;  
+        if($task['st'] && $task['et']){
+          $time = $task['st']->diff($task['et']);
+          $salida = [$task['id'], $time->days*24+$time->h+($task['ext']*60)/(3600)];
+        } 
+      }
+      return $salida;  
    }
 
    public function findByMonth(int $month, int $userid): Array
@@ -129,7 +132,7 @@ class TaskRepository extends ServiceEntityRepository
     public function findByDate($value, $user): array
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.end_time LIKE :val AND t.User = :uid')
+            ->andWhere('t.end_time LIKE :val AND t.user = :uid')
             ->setParameter('val', $value.'%')
             ->setParameter('uid', $user->getId())
             ->orderBy('t.id', 'ASC')
@@ -145,7 +148,7 @@ class TaskRepository extends ServiceEntityRepository
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=1 and task.User=:userId')
+            ->andWhere('task.state_request=1 and task.user=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
@@ -161,7 +164,7 @@ class TaskRepository extends ServiceEntityRepository
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId')
+            ->andWhere('task.state_request=1 and task.state=1 and task.user=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
@@ -173,36 +176,33 @@ class TaskRepository extends ServiceEntityRepository
         //Esto es para el state
         $userId = $user->getId();
         $date = new \DateTime();
+        $now=$date->format('Y-m-d'); 
 
         //comprobamos si hay alguna tarea comenzada
         $return = $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and task.end_time is NULL and task.start_time is not NULL')
+            ->andWhere('task.state_request=1 and task.state=1 and task.user=:userId and task.end_time is NULL and task.start_time is not NULL')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
         ;
         if (count($return) > 0)
         {
-
             return $return;
-
         }
         else
         {
             //si no hay ninguna comenzada
             //task.state_request=1 and task.state=1 and task.User=:userId and e.start_time>= :date_start and task.end_time is NULL
             return $this->createQueryBuilder('task')
-                ->join('task.Event', 'e')
-                ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId and e.start_date>= :dateStart and task.end_time is NULL')
-                ->andWhere('e.start_date <= :dateEnd')
-                ->setParameter('userId', $userId)
-                ->setParameter('dateStart', $date->format('Y-m-d 00:00:00'))
-                ->setParameter('dateEnd', $date->format('Y-m-d 23:59:59'))
-                ->getQuery()
-                ->getResult()
+            ->join('task.Event', 'e')
+            ->andWhere('task.state_request=1 and task.state=1 and task.user=:userId and task.startTimeCompare LIKE :date and e.endDate >= :date2 and task.end_time is NULL')
+            ->setParameter('userId', $userId)
+            ->setParameter('date', $now."%")
+            ->setParameter('date2', $now)
+            ->getQuery()
+            ->getResult()
             ;
         }
-
 
     }
 
@@ -212,7 +212,7 @@ class TaskRepository extends ServiceEntityRepository
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.User=:userId')
+            ->andWhere('task.user=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
@@ -284,7 +284,7 @@ class TaskRepository extends ServiceEntityRepository
         $userId = $user->getId();
 
         return $this->createQueryBuilder('task')
-            ->andWhere('task.state_request=1 and task.state=1 and task.User=:userId')
+            ->andWhere('task.state_request=1 and task.state=1 and task.user=:userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
@@ -293,13 +293,20 @@ class TaskRepository extends ServiceEntityRepository
 
 
 
-//    public function findOneBySomeField($value): ?Task
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function createTomorrowTask(Event $event, User $user, \DatetimeInterface $date): void
+    {
+
+      $date->modify('+1 day');
+      $task = new Task();
+      $task->setUser($user);
+      $task->setState(1);
+      $task->setStateRequest(1);
+      $task->setStartTimeCompare($date);
+      $task->setEvent($event);
+      $task -> setType(0);
+
+
+      $this->save($task, true);
+  }
+
 }

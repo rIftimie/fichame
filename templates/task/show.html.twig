@@ -45,10 +45,12 @@
 
             {% if task.type == 1 %}
     <h2 class="text-center my-5 mx-5">Trabajos</h2>
+          <a href="{{ path("app_job_new")}}" class="btn btn-primary">Crear Trabajo</a>
     <div class="container">
       <div class="row text-center d-flex justify-content-around">
         {% for job in task.jobs %}
         <div class="col-md-4">
+          
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">{{ job.description }}</h5>

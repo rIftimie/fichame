@@ -6,6 +6,9 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
+use App\Repository\EventCategoryRepository;
+
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +46,7 @@ class EventController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/event/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function new( Request $request, EventRepository $eventRepository): Response
+    public function new( Request $request, EventRepository $eventRepository, UserRepository $userRepository, TaskRepository $taskRepository): Response
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -51,6 +54,11 @@ class EventController extends AbstractController
         $event->setCompany($this->getUser()->getCompany() );
         if ($form->isSubmitted() && $form->isValid()) {
             $eventRepository->save($event, true);
+            
+            foreach ($userRepository->findAll() as $user)
+            {
+                $taskRepository->createTask($event, $user);
+            }
 
             return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
         }
