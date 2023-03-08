@@ -55,6 +55,9 @@ class Task
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $startTimeCompare = null;
 
+    #[ORM\Column]
+    private ?bool $hidden = false;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
@@ -211,10 +214,11 @@ class Task
     }
     public function getTotalTime(): int
     {
-    $res=0;
-    $res= ($this->end_time->getTimestamp()-$this->start_time->getTimestamp()+$this->extra_time)/(3600);
-
-    return $res;
+        $res=0;
+        if($this->start_time){
+            $res= ($this->end_time->getTimestamp()-$this->start_time->getTimestamp()+$this->extra_time)/(3600);
+        }
+        return $res;
     }
 
     /**
@@ -243,6 +247,18 @@ class Task
     public function setStartTimeCompare(?\DateTimeInterface $startTimeCompare): self
     {
         $this->startTimeCompare = $startTimeCompare;
+
+        return $this;
+    }
+
+    public function isHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(bool $hidden): self
+    {
+        $this->hidden = $hidden;
 
         return $this;
     }

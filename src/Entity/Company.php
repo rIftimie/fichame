@@ -36,6 +36,12 @@ class Company
     #[ORM\Column(nullable: true)]
     private ?int $salaryperhour = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $logo = null;
+
+    #[ORM\Column]
+    private ?bool $hidden = false;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -168,6 +174,30 @@ class Company
     public function setSalaryperhour(?int $salaryperhour): self
     {
         $this->salaryperhour = $salaryperhour;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): self
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function isHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(bool $hidden): self
+    {
+        $this->hidden = $hidden;
 
         return $this;
     }

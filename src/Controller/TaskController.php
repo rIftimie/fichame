@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 #[Route('/task')]
 class TaskController extends AbstractController
 {
@@ -22,9 +23,9 @@ class TaskController extends AbstractController
     {
         $tasks = $taskRepository->findBy([
             'state' => 1,
-            'user' => $this->getUser()
-        ]
-        );
+            'user' => $this->getUser(),
+            'hidden' => 0
+        ]);
 
         return $this->render('task/index.html.twig',[
             'tasks' => $tasks
@@ -35,11 +36,6 @@ class TaskController extends AbstractController
     #[Route('/seeTaskToday', name: 'app_ seeTaskToday', methods: ['GET', 'POST'])]
     public function seeTaskToday(Request $request, TaskRepository $taskRepository): Response
     {
-
-        /* Hoy de mañana
-        $hoy= new \DateTime('2023-02-11');*/
-
-        //hoy de hoy 
         $hoy = new \DateTime();
         $tomorrow = new \DateTime('2023-02-11');
 
@@ -121,8 +117,6 @@ class TaskController extends AbstractController
     public function editState_request(Request $request, int $state_request, Task $task, TaskRepository $taskRepository): Response
     {
 
-
-
         //El estado 1 es Aceptado
         //El estado 0 es Rechazado
 
@@ -143,7 +137,6 @@ class TaskController extends AbstractController
     #[Route('/{id}/updateState', name: 'app_task_update_State', methods: ['GET', 'POST'])]
     public function UpdateState(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
-
         //En state 1 es Asignado
         //En state NULL es no asignado
 

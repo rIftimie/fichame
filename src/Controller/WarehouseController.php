@@ -12,27 +12,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 class WarehouseController extends AbstractController
 {
     #[Route('/warehouse', name: 'app_warehouse')]
     public function index(TaskRepository $taskRepository, EventRepository $eventRepository): Response
     {
-        
+        $tasks = $taskRepository->findBy([
+            'state' => 1,
+            'user' => $this->getUser(),
+            'hidden' => 0
+        ]);
+
         return $this->render('warehouse/index.html.twig', [
-            'controller_name' => 'WarehouseController',
-            'tareas' => $taskRepository->findAll(),
+            'tareas' => $tasks,
             'eventrep'=>$eventRepository,
             'horasmensuales'=>$taskRepository->getHorasRealizadas($taskRepository->getHorasMensuales(date('Y'), date('m')))
-            
         ]);
     }
     #[Route('/warehouse/vacations', name: 'app_warehouse_vacation',  methods: ['GET', 'POST'])]
     public function vacation(Request $request, TaskRepository $taskRepository, EventRepository $eventRepository): Response
     {
         $fechainicio = new DateTime($request->get('date-i'));
-        // $fechainicio =\DateTime::createFromFormat("d/m/Y H:i",strtotime($request->get('date-i')))->format("Y-m-d H:i:s");
         $fechafin = new DateTime($request->get('date-f'));
+
         $event = new Event();
         $event->setName("Vacaciones | ".$this->getUser()->getUsername());
         $event->setStartDate($fechainicio);
@@ -50,25 +55,17 @@ class WarehouseController extends AbstractController
         $task->setEnd_Time($fechafin);
         $task->setEvent($event);
         $task->setType(2);
+        $task->setStateRequest(1);
         
-        // $task->setTaskId($taskRepository->findOneById(1));
-            
-        if($request->get('date-i')){
+        if ( $request->get('date-i') ) {
             $eventRepository->save($event, true);
             $taskRepository->save($task, true);
-            return $this->redirectToRoute('app_warehouse', [
-                'controller_name' => 'WarehouseController',
-                'tareas' => $taskRepository->findAll(),
-                'eventrep'=>$eventRepository,
-                'horasmensuales'=>$taskRepository->getHorasRealizadas($taskRepository->getHorasMensuales(date('Y'), date('m')))
-            ], Response::HTTP_SEE_OTHER);
-        }else{
 
+            return $this->redirectToRoute('app_warehouse');
+        } else {
             return $this->render('warehouse/vacation.html.twig', [
                 'task' => $task,
-                // 'form' => $form,
             ]);
         }
-
     }
 }

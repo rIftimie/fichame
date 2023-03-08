@@ -7,41 +7,21 @@
 {% block javascripts %}
 
 {% endblock %}
+<main class="container-fluid d-flex">
+    {% for task in tasks %}       
+      <section class="">
+        <h3>Tarea ID:<b>{{ task.id}}</b></h3>
+        <p>Estado: {{task.state}}</p>
+        <p>Estado Request: {{task.getStateRequest}}</p>
+        <p>User: {{task.user}}</p>
+        <p>Evento: {{task.event}}</p>
+        <p>Hora de Comienzo: {{task.getStartTime| date ('y-M-d H:m')}}</p>
+        <p>Hora de Fin: {{task.getEndTime| date ('y-M-d H:m')}}</p>
 
-
-
-
-
-      <h1> Tareas <h1>
-        {% for task in tasks %}       
-           
-              {#  <td><b>{{ noticia.id }}<b></td> #}
-            
-                <h3>Tarea ID:<b>{{ task.id}}</b></h3>
-                <p>Estado: {{task.state}}</p>
-                <p>Estado Request: {{task.getStateRequest}}</p>
-                <p>User: {{task.user}}</p>
-                <p>Evento: {{task.event}}</p>
-                <p>Hora de Comienzo: {{task.getStartTime| date ('y-M-d H:m')}}</p>
-                <p>Hora de Fin: {{task.getEndTime| date ('y-M-d H:m')}}</p>
-
-
-              {#  <p>Estado reques : {{task.state_request}}</p>
-               
-                <p>Estado: {{task.start_time | date ('d/m/y')}}</p> #}
-
-              
-
-             {#   <p> <form method="POST" action="{{path('app_comentario_edit',{'id':comentario.id })}}"> #}
-
-             <form method="POST" action="#">
-                        <input role="button" class="BotonMargenIz btn btn-success" onclick="return confirm('¿Vas de modificar una tarea?')" class="BotonMargenIz" type="submit" value="Editar tarea"> </p>
-                    </form>
-                 
-             {% endfor %}  
-
-
+        <a class="btn btn-primary" href="{{ path('app_task_edit', { id: task.id}) }}">Editar</a>
         
-             
-
+      </section>
+    {% endfor %}  
+</main>
+  
 {% endblock %}

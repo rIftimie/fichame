@@ -16,33 +16,33 @@ class MainController extends AbstractController
     #[Route('/', name: 'app_main')]
     public function index(TaskRepository $taskRepository, UserRepository $userRepository): Response
     {
-      $user = $this->getUser();
-      if ($user)
-        {
-          $date= new \DateTime();
-          $now=$date->format('Y-m-17'); 
+        if($this->getUser()){
             $user = $this->getUser();
-            $user->setLastLogin(new \DateTime());
-            $userRepository->save($user, true);
-            $user->changeRemainingHours();
-            return $this->render('main/index.html.twig', [
 
-                'tasks' => $taskRepository->showPendingTasksByUser($user),
-                'taskAsignments' => $taskRepository->showAsignByUserUncompleted($user),
-                'now' => $now,
-              
-            ]);
-
-
+            if ($user) {
+                $date= new \DateTime();
+                $now=$date->format('Y-m-17'); 
+                  $user = $this->getUser();
+                  $user->setLastLogin(new \DateTime());
+                  $userRepository->save($user, true);
+                  $user->changeRemainingHours();
+                  return $this->render('main/index.html.twig', [
+      
+                      'tasks' => $taskRepository->showPendingTasksByUser($user),
+                      'taskAsignments' => $taskRepository->showAsignByUserUncompleted($user),
+                      'now' => $now,
+                    
+                  ]);
+              }
+              else{
+                  return $this->render('main/index.html.twig', [
+                      'controller_name' => 'MainController',
+                  ]);
+      
+              }
+        } else {
+            return $this->redirectToRoute("app_login");
         }
-        else
-        {
-
-
-            return $this->render('main/index.html.twig', [
-                'controller_name' => 'MainController',
-            ]);
-
-        }
+      
     }
 }

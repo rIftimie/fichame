@@ -177,8 +177,12 @@ class Event
 
     public function setHidden(int $hidden): void
     {
+        for ($i=0; $i < count($this->tasks) ; $i++) { 
+            $this->tasks[$i]->setHidden($hidden);
+        }
         $this->hidden = $hidden;
     }
+
     public function getCompany(): ?Company
     {
         return $this->company;

@@ -3,17 +3,13 @@
 {% block title %}Company{% endblock %}
 
 {% block body %}
-    <h1>Company</h1>
+    <h1>{{company.title }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ company.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ company.title }}</td>
             </tr>
             <tr>
                 <th>Nif</th>
