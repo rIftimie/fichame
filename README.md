@@ -11,7 +11,7 @@
 
 -   3. Añadida mejor navegacion para el usuario (barra de navegacion, link para warehouse...)
 
--   4. A la hora de aceptar tareas en el evento, no se mostrara la opcion de aceptar/denegar si ya hay una resoluacion
+-   4. A la hora de aceptar tareas en el evento, no se mostrara la opcion de aceptar/denegar si ya hay una resolucion
 
 -   5. Mejorada la entidad Task (propiedades de tiempo son llamadas pero son nulas y daban error)
 
